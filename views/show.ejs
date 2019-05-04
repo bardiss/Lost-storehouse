@@ -1,0 +1,41 @@
+<% include ./partials/header %>
+
+<div class="ui main text container segment">
+    <div class="ui huge header"> <%= products.name %> </div>
+    <div class="ui top attached ">
+        <div class="item"> <br><hr><br>
+            <div class="content">
+                    <span> <strong>Arrived at :</strong>  <%= products.date.toDateString() %></span>
+
+            </div>
+            <br><hr>
+
+            <div class="price">
+                <p><strong>Price :</strong>  <%= products.price %></p>
+            </div>
+            <br><hr>
+            <div class="quantity">
+                    <p><strong>Quantity :</strong>  <%= products.quantity %></p>
+                </div>
+                <br><hr>
+            <div class="description">
+                <p> <strong>Description</strong> <%= products.description %></p>
+            </div>
+            <br><hr><br>
+
+            <a href="/products/<%= products._id %>/edit" class="ui orange basic button">Edit</a>
+            <form id="delete" action="/products/<%= products._id%>?_method=DELETE" method="POST">
+                <button  class="ui red basic  button">Delete</button>
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<% include ./partials/footer %>

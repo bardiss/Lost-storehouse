@@ -1,0 +1,42 @@
+<% include ./partials/header %>
+<div class="ui container Table">
+<table class="ui  inverted table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th></th>
+        <th></th>
+
+      </tr>
+    </thead>
+
+    <% suppliers.forEach(function(supplier){ %>
+    <%  if(supplier.Archive===0) { %>
+    
+       <tbody>
+      
+      <tr>
+        <td> <%= supplier.FirstName +" "+supplier.LastName %> </td>
+        <td> <%= supplier.UserName %> </td>
+        <th class="right aligned"><a href="/admin/admin_suppliers/<%= supplier._id%>/edit"><button class="ui green basic button"> Edit </button></a></th>
+        <th class="right aligned">
+          
+          <form id="delete" action="/admin/admin_suppliers/<%= supplier._id%>?_method=DELETE" method="POST">
+                <button  class="ui green basic  button"> Archive </button>
+            </form>
+
+          </th>
+      </tr>
+    
+    </tbody>
+      
+      <% } %>
+   
+    <% }) %>
+
+
+  </table>
+  </div>
+
+<% include ./partials/footer %>

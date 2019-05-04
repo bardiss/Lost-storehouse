@@ -1,0 +1,61 @@
+<% include ./partials/header %>
+
+<div class="ui main text container segment">
+    <div class="ui huge header">Edit <%= products.name %></div>
+    <form class="ui form action" action="/products/<%= products._id %>?_method=PUT" method="POST">
+
+        <div class="field">
+            <label>name</label>
+            <input required type="text" value="<%= products.name %>" placeholder="name" name="product[name]">
+        </div>
+
+        <div class="field">
+            <% if(products.category ==='Laptop') { 
+                        var lap ="selected"   ;              
+                } 
+
+             if(products.category ==='TV') { 
+                 var tv ="selected"  ;                
+                } 
+
+             if(products.category ==='Smartphones') { 
+                  var smart ="selected"   ;               
+                }  %>
+
+            <label>category</label>
+            <select required  name=" product[category]" > 
+                <option value="Laptop" selected = <%= lap =null %>>  Laptop</option>
+                <option value="TV" selected = <%= tv =null %> > TV</option>
+                <option value=="Smartphones" selected = <%= smart =null %>  >Smartphones</option>
+            </select>
+        </div>
+
+
+
+        <div class="field">
+            <label>price</label>
+            <input required type="text" value="<%= products.price %>" placeholder="price" name="product[price]">
+        </div>
+
+        <div class="field">
+            <label>quantity</label>
+            <input required type="text"  value="<%= products.quantity %>" placeholder="quantity" name="product[quantity]">
+        </div>
+
+        <div class="field">
+            <label>description</label>
+            <textarea required name="product[description]"> <%= products.description %> </textarea>
+        </div>
+
+        <input type="submit" class="ui violet basic button">
+
+
+    </form>
+
+
+</div>
+
+
+
+<% include ./partials/footer %>
+

@@ -1,0 +1,38 @@
+<% include ./partials/header %>
+<% products.forEach(function(product){ %>
+   
+
+<div class="ui cards moving ">
+    <div class="card">
+        <div class="content">
+            <div class="header">
+                <h1><%= product.name %></h1>  
+            </div>
+            <div class="meta">
+                <span><%= product.created %></span>
+            </div>
+            <div class="description">
+                <p><%= product.description.substring(0,100) %> </p>
+            </div>
+        </div>
+        <div class="extra content">
+            <div>
+               <a href=  "/products/<%= product._id %>" > <button class="fluid blue ui button" > get more info and edit  </button>
+               </a>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+
+
+<% }); %>
+
+<% include ./partials/footer %>
+
+
+
+
+
+

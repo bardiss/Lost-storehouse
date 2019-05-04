@@ -1,0 +1,92 @@
+<% include ./partials/header %>
+<p>hello world</p>
+<div class="ui main text container segment">
+    <div class="ui huge header">New Account </div>
+    <form class="ui form action" action="/admin/employee" method="POST">
+        
+        <div class="field">
+            <label>FirstName</label>
+            <input required type="text" placeholder="FirstName" name="EmployeeAccount[FirstName]">
+        </div>
+
+         
+        <div class="field">
+            <label>LastName</label>
+            <input required type="text" placeholder="LastName" name="EmployeeAccount[LastName]">
+        </div>
+
+        <div class="field">
+            <label>UserName</label>
+            <input required type="text" placeholder="UserName" name="EmployeeAccount[UserName]">
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input required type="password" placeholder="Password" name="EmployeeAccount[Password]">
+        </div>
+
+        <div class="field">
+            <label>Age</label>
+            <input required type="number" placeholder="Age" name="EmployeeAccount[Age]">
+            
+        </div>
+
+
+
+        <div class="field">
+            <label>CardNumber</label>
+            <input required type="number" placeholder="CardNumber" name="EmployeeAccount[CardNumber]">
+        </div>
+
+        <div class="field">
+            <label>CVV</label>
+            <input required type="number" placeholder="CVV" name="EmployeeAccount[CVV]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationMonth</label>
+            <input required type="number" placeholder="ExpirationMonth" name="EmployeeAccount[ExpirationMonth]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationYear</label>
+            <input required type="number" placeholder="ExpirationYear" name="EmployeeAccount[ExpirationYear]">
+        </div>
+
+        <div class="field">
+            <label>JobDescription</label>
+            <input required type="text" placeholder="JobDescription" name="EmployeeAccount[JobDescription]">
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input required type="email" placeholder= "Email" name="EmployeeAccount[Email]"></input>
+        </div>
+
+
+        <div class="field">
+            <label>PhoneNumber</label>
+            <input required type="number" placeholder="PhoneNumber" name="EmployeeAccount[PhoneNumber]">
+        </div>
+
+        <div class="field">
+            <label>Address</label>
+            <input required type="text" placeholder="Address" name="EmployeeAccount[Address]">
+        </div>
+
+        <div class="field">
+            <label>Salary</label>
+            <input required type="text" placeholder="Salary" name="EmployeeAccount[Salary]">
+        </div>
+
+        <button  class="ui violet basic button"> Create</button>
+
+
+    </form>
+
+
+</div>
+
+
+
+<% include ./partials/footer %>

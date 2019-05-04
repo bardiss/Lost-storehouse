@@ -1,0 +1,92 @@
+<% include ./partials/header %>
+<p>hello world</p>
+<div class="ui main text container segment">
+    <div class="ui huge header">New Account </div>
+    <form class="ui form action" action="/admin/admin_employees/<%=Employee._id %>?_method=PUT" method="POST">
+        
+        <div class="field">
+            <label>FirstName</label>
+            <input required type="text" placeholder="FirstName" value="<%= Employee.FirstName %>" name="EmployeeAccount[FirstName]">
+        </div>
+
+         
+        <div class="field">
+            <label>LastName</label>
+            <input required type="text" placeholder="LastName" value="<%= Employee.LastName %>" name="EmployeeAccount[LastName]">
+        </div>
+
+        <div class="field">
+            <label>UserName</label>
+            <input required type="text" placeholder="UserName" value="<%= Employee.UserName %>" name="EmployeeAccount[UserName]">
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input required type="password" placeholder="Password" value="<%= Employee.Password %>" name="EmployeeAccount[Password]">
+        </div>
+
+        <div class="field">
+            <label>Age</label>
+            <input required type="number" placeholder="Age"  value="<%= Employee.Age %>" name="EmployeeAccount[Age]">
+            
+        </div>
+
+
+
+        <div class="field">
+            <label>CardNumber</label>
+            <input required type="number" placeholder="CardNumber" value="<%= Employee.CardNumber %>" name="EmployeeAccount[CardNumber]">
+        </div>
+
+        <div class="field">
+            <label>CVV</label>
+            <input required type="number" placeholder="CVV" value="<%= Employee.CVV %>"  name="EmployeeAccount[CVV]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationMonth</label>
+            <input required type="number" placeholder="ExpirationMonth" value="<%= Employee.ExpirationMonth %>" name="EmployeeAccount[ExpirationMonth]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationYear</label>
+            <input required type="number" placeholder="ExpirationYear" value="<%= Employee.ExpirationYear %>" name="EmployeeAccount[ExpirationYear]">
+        </div>
+
+        <div class="field">
+            <label>JobDescription</label>
+            <input required type="text" placeholder="JobDescription" value="<%= Employee.JobDescription %>" name="EmployeeAccount[JobDescription]">
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input required type="email" placeholder= "Email" value="<%= Employee.Email %>" name="EmployeeAccount[Email]"></input>
+        </div>
+
+
+        <div class="field">
+            <label>PhoneNumber</label>
+            <input required type="number" placeholder="PhoneNumber" value="<%= Employee.PhoneNumber %>" name="EmployeeAccount[PhoneNumber]">
+        </div>
+
+        <div class="field">
+            <label>Address</label>
+            <input required type="text" placeholder="Address" value="<%= Employee.Address %>" name="EmployeeAccount[Address]">
+        </div>
+
+        <div class="field">
+            <label>Salary</label>
+            <input required type="text" placeholder="Salary" value="<%= Employee.Salary %>" name="EmployeeAccount[Salary]">
+        </div>
+
+        <button  class="ui violet basic button"> Update</button>
+
+
+    </form>
+
+
+</div>
+
+
+
+<% include ./partials/footer %>

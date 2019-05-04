@@ -1,0 +1,78 @@
+<% include ./partials/header %>
+<p>hello world</p>
+<div class="ui main text container segment">
+    <div class="ui huge header">New Account </div>
+    <form class="ui form action" action="/admin/supplier" method="POST">
+        
+        <div class="field">
+            <label>FirstName</label>
+            <input required type="text" placeholder="FirstName" name="SupplierAccount[FirstName]">
+        </div>
+
+         
+        <div class="field">
+            <label>LastName</label>
+            <input required type="text" placeholder="LastName" name="SupplierAccount[LastName]">
+        </div>
+
+        <div class="field">
+            <label>UserName</label>
+            <input required type="text" placeholder="UserName" name="SupplierAccount[UserName]">
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input required type="password" placeholder="Password" name="SupplierAccount[Password]">
+        </div>
+
+        
+
+
+
+        <div class="field">
+            <label>CardNumber</label>
+            <input required type="number" placeholder="CardNumber" name="SupplierAccount[CardNumber]">
+        </div>
+
+        <div class="field">
+            <label>CVV</label>
+            <input required type="number" placeholder="CVV" name="SupplierAccount[CVV]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationMonth</label>
+            <input required type="number" placeholder="ExpirationMonth" name="SupplierAccount[ExpirationMonth]">
+        </div>
+
+        <div class="field">
+            <label>ExpirationYear</label>
+            <input required type="number" placeholder="ExpirationYear" name="SupplierAccount[ExpirationYear]">
+        </div>
+
+        
+
+        <div class="field">
+            <label>Email</label>
+            <input required type="email" placeholder= "Email" name="SupplierAccount[Email]"></input>
+        </div>
+
+
+        <div class="field">
+            <label>PhoneNumber</label>
+            <input required type="number" placeholder="PhoneNumber" name="SupplierAccount[PhoneNumber]">
+        </div>
+
+        <div class="field">
+            <label>Address</label>
+            <input required type="text" placeholder="Address" name="SupplierAccount[Address]">
+        </div>
+
+        
+
+        <button  class="ui violet basic button"> Create</button>
+
+
+    </form>
+
+
+</div>

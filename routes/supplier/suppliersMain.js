@@ -2,6 +2,8 @@
 const express = require('express');
 const suppMainRouter = express.Router();
 
+// Requiring Models
+const SUPPLIER = require('../../models/supplier-model')
 
 
 suppMainRouter.get('/:id', (req, res) => {

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 //******* SUPPLIER ******* */
-// Required ==> username(unique), 
+// Required ==> username(unique), email(unique), password
 var SupplierSchema = new mongoose.Schema({
     UserName   : {
         type: String,

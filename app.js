@@ -14,7 +14,13 @@ Employee      =require('./models/employee-model'),
 Product         =require('./models/product-model'),
 // Routes
 adminRoute         =require('./routes/admin/admin-route'),
+<<<<<<< HEAD
 suppliersRoute       =require('./routes/supplier/supplier-route'),
+=======
+suppliersRoute       =require('./routes/supplier/suppliersMain'),
+productRoute          =require('./routes/product/productMain'),
+
+>>>>>>> 8a2f497145d953e9eecb155e944bca2d2258ef1e
 
 // Express middlewares
 app           =express();
@@ -27,13 +33,14 @@ app.use(methodOverride("_method"));
 
 // Connecting to DataBase Proceddure
 const dbName = config.get("dbName")
-mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true }) 
+mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }) 
 .then(() =>console.log(`Connected to '${dbName}' DB successfully`)) // DB connected successfully
 .catch((err) => console.log(`${dbName}' DB Connecting Error: ${err.message}`));  // Catch the error
 
 // Redirecting to Routes
 app.use("/admin",adminRoute);
-app.use("/suppliers",suppliersRoute); // 
+app.use("/suppliers",suppliersRoute); //
+app.use("/products", productRoute);
 
 app.listen(process.env.PORT, process.env.IP,function(){
     console.log(`Server started on  `);

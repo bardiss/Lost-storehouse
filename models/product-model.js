@@ -18,9 +18,12 @@ var productSchema = new mongoose.Schema({
         ref: 'Supplier',
         required: true
     }, 
-    pull: Boolean,
-    accepted: Boolean,
-    declined: Boolean
+    accepted: {type:Boolean,
+        default: false
+    },
+    declined: {type:Boolean,
+        default: false
+    }
  });
 
 

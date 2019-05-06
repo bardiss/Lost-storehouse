@@ -14,13 +14,9 @@ Employee      =require('./models/employee-model'),
 Product         =require('./models/product-model'),
 // Routes
 adminRoute         =require('./routes/admin/admin-route'),
-<<<<<<< HEAD
 suppliersRoute       =require('./routes/supplier/supplier-route'),
-=======
-suppliersRoute       =require('./routes/supplier/suppliersMain'),
 productRoute          =require('./routes/product/productMain'),
 
->>>>>>> 8a2f497145d953e9eecb155e944bca2d2258ef1e
 
 // Express middlewares
 app           =express();
@@ -42,8 +38,10 @@ app.use("/admin",adminRoute);
 app.use("/suppliers",suppliersRoute); //
 app.use("/products", productRoute);
 
-app.listen(process.env.PORT, process.env.IP,function(){
-    console.log(`Server started on  `);
+const port = config.get('portName')
+const ip = config.get('ipName')
+app.listen(port, ip,function(){
+    console.log(`Server started on ${port}`);
 });
 
 

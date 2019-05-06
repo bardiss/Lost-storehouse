@@ -1,8 +1,6 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose')
 
-//******* PRODUCT ******* */
-
-const productSchema = new mongoose.Schema({
+const pullReqSchema = new mongoose.Schema({
 
     name  : {String ,
 
@@ -27,16 +25,14 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Supplier',
         required: true
-    }, 
-    accepted: {type:Boolean,
-        default: false
-    },
-    declined: {type:Boolean,
-        default: false
     }
  });
 
 
 
-const Product = mongoose.model("Product" , productSchema) ;
-module.exports.Product =  Product
+const PullRequest = mongoose.model("PullRequest" , pullReqSchema) ;
+
+
+
+
+module.exports.PullRequest = PullRequest

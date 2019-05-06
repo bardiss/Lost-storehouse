@@ -1,11 +1,14 @@
 const mongoose=require('mongoose');
-
+const Joi = require('joi')
 //******* PRODUCT ******* */
 
 const productSchema = new mongoose.Schema({
 
-    name  : {String ,
-
+    name: {
+        type: String,
+        reuqired: true,
+        minlength: 1,
+        maxlength: 255
     },
     category : {
         type:String ,
@@ -20,8 +23,8 @@ const productSchema = new mongoose.Schema({
     } ,
     description:String,
     date:{
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now
     },
     supplier: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,10 +36,23 @@ const productSchema = new mongoose.Schema({
     },
     declined: {type:Boolean,
         default: false
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
     }
  });
 
+ function ValidateProduct(user) {
+    const schema = {
+      name: Joi.string().min(1).max(255).required(),
+      category: Joi.string().required(),
+      quantity: Joi.number().integer()
+    };
+    return Joi.validate(user, schema);
+}
 
 
 const Product = mongoose.model("Product" , productSchema) ;
-module.exports.Product =  Product
+exports.Product =  Product
+exports.ValidateProduct = ValidateProduct

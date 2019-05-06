@@ -1,8 +1,7 @@
 const express   =require("express"),
-router          =express.Router(),
-Supplier        =require('../../models/supplier-model'),
-Employee        =require('../../models/employee-model')
+router          =express.Router()
 const Product  =require('../../models/product-model')
+const {PullRequest} = require('../../models/pullRequest')
 
 // ***************Main Dashboard*************
 router.get("/",function(req,res){
@@ -15,27 +14,48 @@ router.get("/",function(req,res){
 // ******************** Adding orders ******************
 // Form page to add new product
 router.get("/product/add",function(req ,res){
-     res.render("NewProduct").jsonp({success : true})
+     res.render("NewProduct")
 });
-
 
 router.post("/product/add",async (req,res) => {
     const newProduct = req.body.product
-    /*try{
-        const result = await Product.create(newProduct)
+    try{
+        const result = Product.create(newProduct)
         if (result){
-            res.status(200).redirect('').
+            res.status(200)
+            .render('requestSend')
         }
     }
-    catch(err) */
+    catch(err){
+        res.send(err.message)
+    }
 });
 
+// Pulling Products
 
 
-router.get("/pull",function(req ,res){
-     res.render("PullProduct")
+
+
+router.get("/products/pull",function(req ,res){
+     res.render("PullProduct").send([
+         {name: 'raaed'},
+         {name: 'rokaya'}
+     ])
 });
 
+router.post("/products/pull",async function (req, res){
+    const newPull = req.body.product
+    try{
+        const result = await PullRequest.create(newPull)
+        if (result){
+            res.status(200)
+            .render('requestSend')
+        }
+    }
+    catch(err){
+        res.send(err.message)
+    }
+});
 
 
 module.exports = router

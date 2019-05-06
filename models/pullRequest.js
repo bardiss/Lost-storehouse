@@ -2,8 +2,11 @@ const mongoose = require('mongoose')
 
 const pullReqSchema = new mongoose.Schema({
 
-    name  : {String ,
-
+    name  : {
+        type: String,
+        reuqired: true,
+        minlength: 1,
+        maxlength: 255
     },
     category : {
         type:String ,
@@ -11,12 +14,10 @@ const pullReqSchema = new mongoose.Schema({
         enum: ['Laptop', 'TV', 'Smartphones']
 
     },
-    price : Number ,
     quantity : {
         type: Number,
         required: true
     } ,
-    description:String,
     date:{
         type:Date,
         default:Date.now
@@ -24,7 +25,7 @@ const pullReqSchema = new mongoose.Schema({
     supplier: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Supplier',
-        required: true
+        //required: true
     }
  });
 

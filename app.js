@@ -4,7 +4,7 @@ bodyParser    =require("body-parser"),          // Please comment what this ???
 methodOverride =require("method-override"),    // Please comment what this ???
 mongoose      =require("mongoose"),
 config = require('config'), // config library to store configured data
-Joi = require('joi')       // joi library used to validate data
+Joi = require('joi'),       // joi library used to validate data
 //defDebugger = require('debug')('index:defDebugger'); // Setting up debugger
 
 // Requiring used Routes
@@ -14,7 +14,7 @@ Employee      =require('./models/employee-model'),
 Product         =require('./models/product-model'),
 // Routes
 adminRoute         =require('./routes/admin/admin-route'),
-suppliersRoute       =require('./routes/supplier/suppliersMain'),
+suppliersRoute       =require('./routes/supplier/supplier-route'),
 
 // Express middlewares
 app           =express();
@@ -35,10 +35,8 @@ mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true 
 app.use("/admin",adminRoute);
 app.use("/suppliers",suppliersRoute); // 
 
-const port = config.get('portName')
-const ip = config.get('ipName')
-app.listen(port, ip,function(){
-    console.log(`Server started on ${ip}:${port} `);
+app.listen(process.env.PORT, process.env.IP,function(){
+    console.log(`Server started on  `);
 });
 
 

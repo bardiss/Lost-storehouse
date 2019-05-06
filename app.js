@@ -27,7 +27,7 @@ app.use(methodOverride("_method"));
 
 // Connecting to DataBase Proceddure
 const dbName = config.get("dbName")
-mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true }) 
+mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }) 
 .then(() =>console.log(`Connected to '${dbName}' DB successfully`)) // DB connected successfully
 .catch((err) => console.log(`${dbName}' DB Connecting Error: ${err.message}`));  // Catch the error
 

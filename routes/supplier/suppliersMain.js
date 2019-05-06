@@ -3,10 +3,11 @@ const express = require('express');
 const suppMainRouter = express.Router();
 
 // Requiring Models
-const SUPPLIER = require('../../models/supplier-model')
+const {Supplier, ValidateUser} = require('../../models/supplier-model')
+const {Product} = require('../../models/product-model')
 
 
-suppMainRouter.get('/:id', (req, res) => {
+/*suppMainRouter.get('/:id', (req, res) => {
     // send Name, logo, Debt
     // Optional( Send count of orders)
     // send Pending Feedbacks
@@ -20,7 +21,7 @@ suppMainRouter.put('/:id', (req, res) => {
     res.send(`updating id: ${req.params.id}`)
     
 });
-
+*/
 const suppliersLogin = require('./suppliersLogin')
 suppMainRouter.use('/', suppliersLogin)
 

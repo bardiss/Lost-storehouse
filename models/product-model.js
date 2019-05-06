@@ -12,7 +12,15 @@ var productSchema = new mongoose.Schema({
     date:{
         type:Date,
         default:Date.now
-    }
+    },
+    supplier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Supplier',
+        required: true
+    } 
  });
 
- module.exports = mongoose.model("product" , productSchema) ; 
+
+
+const Product = mongoose.model("Product" , productSchema) ;
+module.exports.Product =  Product

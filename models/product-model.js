@@ -43,16 +43,5 @@ const productSchema = new mongoose.Schema({
     }
  });
 
- function ValidateProduct(user) {
-    const schema = {
-      name: Joi.string().min(1).max(255).required(),
-      category: Joi.string().required(),
-      quantity: Joi.number().integer()
-    };
-    return Joi.validate(user, schema);
-}
 
-
-const Product = mongoose.model("Product" , productSchema) ;
-exports.Product =  Product
-exports.ValidateProduct = ValidateProduct
+module.exports = mongoose.model("Product" , productSchema) ;

@@ -2,7 +2,7 @@ const express   =require("express"),
 router          =express.Router(),
 Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model')
-const {Product, ValidateProduct}  =require('../../models/product-model')
+const Product  =require('../../models/product-model')
 
 // ***************Main Dashboard*************
 router.get("/",function(req,res){
@@ -15,12 +15,19 @@ router.get("/",function(req,res){
 // ******************** Adding orders ******************
 // Form page to add new product
 router.get("/product/add",function(req ,res){
-     res.render("NewProduct")
+     res.render("NewProduct").jsonp({success : true})
 });
 
 
-router.post("/product/add",function(req,res){
-    
+router.post("/product/add",async (req,res) => {
+    const newProduct = req.body.product
+    /*try{
+        const result = await Product.create(newProduct)
+        if (result){
+            res.status(200).redirect('').
+        }
+    }
+    catch(err) */
 });
 
 

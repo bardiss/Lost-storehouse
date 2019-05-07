@@ -35,12 +35,10 @@ router.post("/product/add",async (req,res) => {
 
 
 
-
-router.get("/products/pull",function(req ,res){
-     res.render("PullProduct").send([
-         {name: 'raaed'},
-         {name: 'rokaya'}
-     ])
+router.get("/products/pull", async function (req ,res){
+    const result = await Product.find({category: 'Laptop'}).select('name category -_id') 
+        
+    res.render("PullProduct",{names: result})
 });
 
 router.post("/products/pull",async function (req, res){
@@ -55,6 +53,7 @@ router.post("/products/pull",async function (req, res){
     catch(err){
         res.send(err.message)
     }
+    
 });
 
 

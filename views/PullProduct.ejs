@@ -5,7 +5,7 @@
     <form class="ui form action" action="/suppliers/products/pull" method="POST">
         
         
-        <div class="field">
+        <div class="category">
             <label>category</label>
             <select required name="product[category]" > 
                 <option value ="Laptop">Laptop</option>
@@ -14,9 +14,21 @@
             </select>
         </div>
 
-        <div class="field">
-            <label>name</label>
-            <input required type="text" placeholder="name" name="product[name]">
+        <div class="name">
+                <label>name</label>
+            <select required name="product[name]" >
+                
+                  <%  $(".category").on("click" , "option",function(){ %>
+                      <% let selected = $(this).val( ) ; %>
+                  <%  }); %>
+            
+                <% names.forEach( function(element){ %>
+                 <option> <% if (element.category === selected) { %>
+                     <%= element.name } %>
+                 </option>
+                <%  }); %>
+                
+            </select>
         </div>
 
 

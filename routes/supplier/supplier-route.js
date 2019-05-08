@@ -60,8 +60,14 @@ router.get("/storing/declined", async (req, res) => {
 // Adding a new Pull order
 
 router.get("/products/pull", async function (req ,res){
+<<<<<<< HEAD
     const result = await Product.find({category: 'Laptop'}).select('name category -_id')      
     res.render("PullProduct",{names: result})
+=======
+    const result = await Product.find({category: 'Laptop'}).select('name category -_id') 
+    names = [{name :"rokaya" , category: "Laptop"} ,{name :"mahmoud" ,category:"Tv"}, {name  : "bardis" ,category:"Smartphone" }] 
+    res.render("PullProduct",{names: names})
+>>>>>>> 37479565175524b07e101b529cdb64fe1fd9036f
 });
 
 router.post("/products/pull",async function (req, res){

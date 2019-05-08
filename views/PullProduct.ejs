@@ -1,5 +1,7 @@
 <% include ./partials/header %>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <p>hello world</p>
 <div class="ui main text container segment">
     <div class="ui huge header">New Product </div>
@@ -14,14 +16,30 @@
                 <option value="Smartphones">Smartphones</option>
             </select>
         </div>
-
+        
         <div class="name">
                 <label>name</label>
             <select required name="product[name]" >
-                <% $('.category').on('change', function() { %>
-                  
-                   <% console.log(this.value) %>
-                   <% }); %>
+                
+               <!--  <script>
+                 $('.category').on('change', function() {              
+                 window.selected = this.value ;
+                 console.log(selected) 
+                    }); 
+                </script> -->
+                <% console.log(names) %>
+                
+                   <% for (let i =0 ;i< names ;i++){ %>
+                   <% } %>
+
+
+                   <!--  <% names.forEach( function(element){ %>
+                        <% console.log("rokaya") %>
+                                       <option> 
+                            <% console.log(selected) %>
+                        
+                    </option>
+                    <%  }); %>  -->
             </select>
         </div>
 
@@ -43,6 +61,17 @@
 
 </div>
 
+<script>
+    $('.UpvoteButton').click(function () {
+      $(this).toggleClass('on');
+      $('.DownvoteButton').removeClass('on');
+    });
+
+    $('.DownvoteButton').click(function () {
+      $(this).toggleClass('on');
+      $('.UpvoteButton').removeClass('on');
+    });
+</script>
 
 
 <% include ./partials/footer %>

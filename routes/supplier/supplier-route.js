@@ -1,10 +1,3 @@
-var jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { window } = new JSDOM();
-const { document } = (new JSDOM('')).window;
-global.document = document;
-var $ = require("jquery")(window);
- 
 const express   =require("express"),
 router          =express.Router()
 const Product  =require('../../models/product-model')
@@ -29,7 +22,7 @@ router.post("/product/add",async (req,res) => {
        const result = Product.create(newProduct)
        if (result){
            res.status(200)
-           .render('requestSend')
+           //.render('requestSend')
        }
    }
    catch(err){
@@ -67,8 +60,7 @@ router.get("/storing/declined", async (req, res) => {
 // Adding a new Pull order
 
 router.get("/products/pull", async function (req ,res){
-    const result = await Product.find({category: 'Laptop'}).select('name category -_id') 
-        
+    const result = await Product.find({category: 'Laptop'}).select('name category -_id')      
     res.render("PullProduct",{names: result})
 });
 

@@ -27,23 +27,18 @@
                  console.log(selected) 
                     }); 
                 </script> -->
-                <% console.log(names) %>
                 
-                   <% for (let i =0 ;i< names ;i++){ %>
-                   <% } %>
-
-
-                   <!--  <% names.forEach( function(element){ %>
-                        <% console.log("rokaya") %>
-                                       <option> 
-                            <% console.log(selected) %>
-                        
-                    </option>
-                    <%  }); %>  -->
+            
+                   <% names.forEach( function(element){ %>
+                
+                    <option> 
+                         <%= element.name %>
+                   </option>
+                  <%  }); %>      
             </select>
         </div>
 
-
+        
 
 
         <div class="field">
@@ -60,7 +55,7 @@
 
 
 </div>
-
+<!-- to use jquary -->
 <script>
     $('.UpvoteButton').click(function () {
       $(this).toggleClass('on');

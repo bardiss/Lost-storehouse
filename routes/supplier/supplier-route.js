@@ -68,8 +68,8 @@ router.get("/storing/declined", async (req, res) => {
 
 router.get("/products/pull", async function (req ,res){
     const result = await Product.find({category: 'Laptop'}).select('name category -_id') 
-        
-    res.render("PullProduct",{names: result})
+    names = [{name :"rokaya" , category: "Laptop"} ,{name :"mahmoud" ,category:"Tv"}, {name  : "bardis" ,category:"Smartphone" }] 
+    res.render("PullProduct",{names: names})
 });
 
 router.post("/products/pull",async function (req, res){

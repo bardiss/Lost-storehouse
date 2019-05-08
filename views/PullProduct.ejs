@@ -1,13 +1,14 @@
 <% include ./partials/header %>
+
 <p>hello world</p>
 <div class="ui main text container segment">
     <div class="ui huge header">New Product </div>
     <form class="ui form action" action="/suppliers/products/pull" method="POST">
         
         
-        <div class="category">
+        <div >
             <label>category</label>
-            <select required name="product[category]" > 
+            <select  class="category"  name="product[category]" required > 
                 <option value ="Laptop">Laptop</option>
                 <option value="TV">TV</option>
                 <option value="Smartphones">Smartphones</option>
@@ -17,17 +18,10 @@
         <div class="name">
                 <label>name</label>
             <select required name="product[name]" >
-                
-                  <%  $(".category").on("click" , "option",function(){ %>
-                      <% let selected = $(this).val( ) ; %>
-                  <%  }); %>
-            
-                <% names.forEach( function(element){ %>
-                 <option> <% if (element.category === selected) { %>
-                     <%= element.name } %>
-                 </option>
-                <%  }); %>
-                
+                <% $('.category').on('change', function() { %>
+                  
+                   <% console.log(this.value) %>
+                   <% }); %>
             </select>
         </div>
 

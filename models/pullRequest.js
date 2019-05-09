@@ -25,7 +25,7 @@ const pullReqSchema = new mongoose.Schema({
     supplier: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Supplier',
-        //required: true
+        required: true
     },
     accepted: {type:Boolean,
         default: false

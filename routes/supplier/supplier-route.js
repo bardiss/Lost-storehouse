@@ -1,8 +1,10 @@
 const express   =require("express"),
 router          =express.Router()
-const Product  =require('../../models/product-model')
-const PullRequest = require('../../models/pullRequest')
-
+const Product  =require('../../models/product-model'),
+PullRequest = require('../../models/pullRequest')
+const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
+const mongoose = require('mongoose')
 // **************************************** Main Dashboard ****************************************
 router.get("/",function(req,res){
     res.render("SupplierDashboard")
@@ -18,16 +20,26 @@ router.get("/product/add",function(req ,res){
 
 router.post("/product/add",async (req,res) => {
    const newProduct = req.body.product
-   try{
-       const result = Product.create(newProduct)
-       if (result){
-           res.status(200)
-           .render('requestSend')
-       }
+   
+   if(!validateProduct(newProduct).error)
+   {
+        try{
+            validateProduct(newProduct)
+            const result = await Product.create(newProduct)
+            if (result){
+                res.status(200)
+                .render('requestSend')
+            }
+        }
+        catch(err){
+            // do something
+            res.send(err.message)
+        }
+   } 
+   else{
+       // do something
    }
-   catch(err){
-       res.send(err.message)
-   }
+   
 });
 
 // ************************************* Pulling Orders *************************************************
@@ -41,16 +53,26 @@ router.get("/products/pull", async function (req ,res){
 
 router.post("/products/pull",async function (req, res){
     const newPull = req.body.product
-    try{
-        const result = await PullRequest.create(newPull)
-        if (result){
-            res.status(200)
-            .render('pulledSend')
+    newPull.supplier = `${createId()}  // Must be removed after authentication`
+    console.log(newPull.supplier)
+    if(!validatePull(newPull).error)
+    {
+        try{
+            const result = await PullRequest.create(newPull)
+            if (result){
+                res.status(200)
+                .render('pulledSend')
+            }
+        }
+        catch(err){
+            // do something
+            res.send(err.message)
         }
     }
-    catch(err){
-        res.send(err.message)
+    else{
+        res.send(validatePull(newPull).error)
     }
+    
    
 });
 
@@ -94,5 +116,38 @@ router.get("/storing/declined", async (req, res) => {
     .select('-_id name category quantity')
     res.send(declindedPullings)
 });
+
+// ******************** Data Validation Section ******************
+// crreating new object id (instead supplier id which should be come from authentication)
+// Note: this function should be deleted after commiting authentication
+function createId(){
+    return new mongoose.Types.ObjectId()
+}
+
+// Validating Product according to it's schema
+// Note: it shouldn't be here :)
+function validateProduct(product){
+    const schema = {
+        name: Joi.string().min(1).max(255).required(),
+        category:Joi.string().required(),
+        price: Joi.number(),
+        quantity: Joi.number().integer().required(),
+        supplier: Joi.objectId().required(),
+        description: Joi.string().required()
+    }
+    return Joi.validate(product, schema)
+}
+// Validating Product according to it's schema
+// Note: it shouldn't be here :)
+function validatePull(pull){
+    const schema = {
+        name: Joi.string().min(1).max(255).required(),
+        category:Joi.string().required(),
+        quantity: Joi.number().integer().required(),
+        supplier: Joi.objectId().required()
+    }
+    return Joi.validate(pull, schema)
+}
+
 
 module.exports = router 

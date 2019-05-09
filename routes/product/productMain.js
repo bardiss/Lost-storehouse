@@ -124,9 +124,12 @@ router.put("/decline/:id",function(req,res){
 
 router.get('/test', (req, res) => {
     Product.create({
-        name: 'laptop',
+        name: 'HP',
         price: 20000,
         supplier: "5cd2ff1974edd329fcab2d69",
+        quantity: 5,
+        category: 'Laptop',
+        description: 'Testing..',
         accepted: false
     })
     res.send('Created ya esraa')

@@ -1,42 +1,77 @@
 <% include ./partials/header %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <p>hello world</p>
 <div class="ui main text container segment">
     <div class="ui huge header">New Product </div>
-    <form class="ui form action" action="/supplier/product" method="POST">
+    <form class="ui form action" action="/suppliers/products/pull" method="POST">
         
-        
-        <div class="field">
+        <div >
             <label>category</label>
-            <select required name=" product[category]" > 
+            <select  class="category"  name="product[category]" required > 
                 <option value ="Laptop">Laptop</option>
                 <option value="TV">TV</option>
                 <option value="Smartphones">Smartphones</option>
             </select>
         </div>
+        
+        <div class="name">
+                <label>name</label>
+            <select required name="product[name]" >
+                
 
-        <div class="field">
-            <label>name</label>
-            <input required type="text" placeholder="name" name="product[name]">
+
+               <!--  <script>
+                 $('.category').on('change', function() {              
+                 window.selected = this.value ;
+                 console.log(selected) 
+                    }); 
+                </script> -->
+                
+            
+                   <% names.forEach( function(element){ %>
+                
+                    <option> 
+                         <%= element.name %>
+                   </option>
+                  <%  }); %>      
+
+               <!--  <script>
+                 $('.category').on('change', function() {              
+                 window.selected = this.value ;
+                 console.log(selected) 
+                    }); 
+                </script> -->
+   
+            </select>
         </div>
 
-
+        
 
 
         <div class="field">
             <label>quantity</label>
             <input required type="text" placeholder="quantity" name="product[quantity]">
         </div>
-
-        
-
-        <input type="submit" class="ui violet basic button">
-
+      <input type="submit" class="ui violet basic button">
 
     </form>
 
 
 </div>
+<!-- to use jquary -->
+<script>
+    $('.UpvoteButton').click(function () {
+      $(this).toggleClass('on');
+      $('.DownvoteButton').removeClass('on');
+    });
 
+    $('.DownvoteButton').click(function () {
+      $(this).toggleClass('on');
+      $('.UpvoteButton').removeClass('on');
+    });
+</script>
 
 
 <% include ./partials/footer %>

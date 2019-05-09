@@ -20,8 +20,8 @@ router.get("/product/add",function(req ,res){
 
 router.post("/product/add",async (req,res) => {
    const newProduct = req.body.product
-   
-   if(!validateProduct(newProduct).error)
+   const validationResult = validateProduct(newProduct).error
+   if(!validationResult.error)
    {
         try{
             validateProduct(newProduct)
@@ -33,11 +33,11 @@ router.post("/product/add",async (req,res) => {
         }
         catch(err){
             // do something
-            res.send(err.message)
+            console.log(err.message)
         }
    } 
    else{
-       // do something
+       console.log(validationResult.error)
    }
    
 });

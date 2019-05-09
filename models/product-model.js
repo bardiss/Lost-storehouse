@@ -24,9 +24,8 @@ var productSchema = new mongoose.Schema({
     declined: {type:Boolean,
         default: false
     }
- });
+ }); 
 
 
-
-const Product = mongoose.model("Product" , productSchema) ;
-module.exports.Product =  Product
+module.exports = mongoose.model("Product" , productSchema) ;
+ 

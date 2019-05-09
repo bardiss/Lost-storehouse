@@ -41,9 +41,4 @@ const pullReqSchema = new mongoose.Schema({
 
 
 
-const PullRequest = mongoose.model("PullRequest" , pullReqSchema) ;
-
-
-
-
-module.exports.PullRequest = PullRequest
+module.exports = mongoose.model("PullRequest" , pullReqSchema) ;

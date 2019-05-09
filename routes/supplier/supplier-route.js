@@ -133,7 +133,7 @@ function validateProduct(product){
         price: Joi.number(),
         quantity: Joi.number().integer().required(),
         supplier: Joi.objectId().required(),
-        description: Joi.string().required()
+        description: Joi.string()
     }
     return Joi.validate(product, schema)
 }

@@ -7,7 +7,8 @@ Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose')
 // **************************************** Main Dashboard ****************************************
 router.get("/",function(req,res){
-    res.render("SupplierDashboard")
+    res.status(200)
+        .render("SupplierDashboard");
 });
 
 
@@ -15,29 +16,31 @@ router.get("/",function(req,res){
 
 // Adding new product
 router.get("/product/add",function(req ,res){
-    res.render("NewProduct")
+    res.status(200)
+        .render("NewProduct");
 });
 
-router.post("/product/add",async (req,res) => {
-   const newProduct = req.body.product
-   const validationResult = validateProduct(newProduct).error
-   if(!validationResult.error)
-   {
-        try{
-            validateProduct(newProduct)
-            const result = await Product.create(newProduct)
-            if (result){
-                res.status(200)
-                .render('requestSend')
-            }
+router.post("/product/add",async (req,res) =>{
+   const newProduct = req.body.product;
+   const validationResult = validateProduct(newProduct);
+   if(!validationResult.error){
+        try
+        {
+            await Product.create(newProduct);
+
+            res.status(201)
+                .render('requestSend');
         }
-        catch(err){
-            // do something
-            console.log(err.message)
+        catch(err)
+        {
+            // Printing the error
+            console.log(err.message);
         }
    } 
-   else{
-       console.log(validationResult.error)
+   else
+   {
+       // Printing the error
+        console.log(validationResult.error.details[0].message);
    }
    
 });
@@ -46,76 +49,166 @@ router.post("/product/add",async (req,res) => {
 // Adding a new Pull order
 
 router.get("/products/pull", async function (req ,res){
-    const result = await Product.find().select('name category -_id') 
+    try
+    {
+        const result = await Product
+            .find()     
+            .select('name category -_id');
 
-    res.render("PullProduct",{names: result})
+        res.status(200)
+            .render("PullProduct",{names: result});
+    }
+    catch(err){
+        // Printing the error
+        console.log(err.message);
+    }
+    
+    
 });
 
 router.post("/products/pull",async function (req, res){
-    const newPull = req.body.product
+    const newPull = req.body.product;
     //newPull.supplier = `${createId()}  // Must be removed after authentication`
-    newPull.supplier = '5cd2ff1974edd329fcab2d69'
-    console.log(newPull.supplier)
-    if(!validatePull(newPull).error)
+    newPull.supplier = '5cd2ff1974edd329fcab2d69';
+
+    const validationResult = validatePull(newPull);
+    if(!validationResult.error)
     {
-        try{
-            const result = await PullRequest.create(newPull)
-            if (result){
-                res.status(200)
-                .render('pulledSend')
-            }
+        try
+        {
+            await PullRequest.create(newPull);
+        
+            res.status(201)
+                .render('pulledSend');
         }
-        catch(err){
-            // do something
-            res.send(err.message)
+        catch(err)
+        {
+            // Printing the error
+            console.log(err.message);
         }
     }
-    else{
-        res.send(validatePull(newPull).error)
+    else
+    {
+        // Printing the error
+        console.log(validationResult.error.details[0].message);
     }
-    
-   
+       
 });
 
 //***************************************** Showing Products already stored ****************************************
 
 router.get("/products/show", async (req, res) => {
-    const storedProducts = await Product.find({supplier: "5cd03fd3e23a9038e0157957", accepted: true, confirmed: true})
-    .select('-_id name category quantity')
-    res.send(storedProducts)
+    try 
+    {
+        const storedProducts = await Product
+            .find({
+                supplier: "5cd03fd3e23a9038e0157957",
+                accepted: true,
+                declined: false,
+                confirmed: true})
+            .select('-_id name category quantity');
+    
+        res.status(200)
+            .send(storedProducts);
+    
+    }
+    catch(err)
+    {
+        // Printing the error
+        console.log(err.message)
+    }
+    
 });
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
 router.get("/storing/confirmations", async (req, res) => {
-    const acceptedProducts = await Product.find({supplier: "5cd03fd3e23a9038e0157957", accepted: true, confirmed: false})
-    .select('-_id name category quantity')
-    res.send(acceptedProducts)
+    try
+    {
+        const acceptedProducts = await Product
+            .find({
+                supplier: "5cd03fd3e23a9038e0157957",
+                accepted: true,
+                declined: false, 
+                confirmed: false})
+            .select('-_id name category quantity')
+
+        res.status(200)
+            .send(acceptedProducts)
+    }
+    catch(err){
+        // Printing the error
+        console.log(err.message)
+    }
 });
 
 
 //*********************************  showing declined storing orders *************************************************
 
 router.get("/storing/declined", async (req, res) => {
-    const declindedProducts = await Product.find({supplier: "5cd03fd3e23a9038e0157957", declined: true})
-    .select('-_id name category quantity')
-    res.send(declindedProducts)
+    try
+    {
+        const declindedProducts = await Product
+            .find({
+                supplier: "5cd03fd3e23a9038e0157957",
+                accepted: false,
+                declined: true
+            })
+            .select('-_id name category quantity')
+        
+            res.status(200)
+                .send(declindedProducts)
+    }
+    catch(err)
+    {
+        // Printing the error
+        console.log(err.message)
+    }
 });
-//******************************  showing accepted storing orders waiting to be confirmed ****************************
+//******************************  showing accepted Pullings orders waiting to be confirmed ****************************
 
 router.get("/pulling/confirmations", async (req, res) => {
-    const acceptedPullings = await PullRequest.find({supplier: "5cd03fd3e23a9038e0157957", accepted: true, confirmed: false})
-    .select('-_id name category quantity')
-    res.send(acceptedPullings)
+    try
+    {
+        const acceptedPullings = await PullRequest
+            .find({
+                supplier: "5cd03fd3e23a9038e0157957",
+                accepted: true,
+                declined: false, 
+                confirmed: false})
+            .select('-_id name category quantity') ;
+
+        res.send(acceptedPullings);
+    }
+    catch(err)
+    {
+        // Printing the error
+        console.log(err.message)
+    }
+
 });
 
 
-//************************************* showing declined storing orders *********************************************
+//************************************* showing declined Pullings orders *********************************************
 
-router.get("/storing/declined", async (req, res) => {
-    const declindedPullings = await Product.find({supplier: "5cd03fd3e23a9038e0157957", declined: true})
-    .select('-_id name category quantity')
-    res.send(declindedPullings)
+router.get("/pulling/declined", async (req, res) => {
+    try
+    {
+        const declindedPullings = await Product
+            .find({
+                supplier: "5cd03fd3e23a9038e0157957", 
+                accepted: false,
+                declined: true,
+                confirmed: false})
+            .select('-_id name category quantity');
+
+        res.send(declindedPullings);
+    }
+    catch(err)
+    {
+        // Printing the error
+        console.log(err.message)
+    }
 });
 
 // ******************** Data Validation Section ******************
@@ -135,10 +228,10 @@ function validateProduct(product){
         quantity: Joi.number().integer().required(),
         supplier: Joi.objectId().required(),
         description: Joi.string()
-    }
-    return Joi.validate(product, schema)
+    };
+    return Joi.validate(product, schema);
 }
-// Validating Product according to it's schema
+// Validating Pulling according to it's schema
 // Note: it shouldn't be here :)
 function validatePull(pull){
     const schema = {
@@ -146,9 +239,9 @@ function validatePull(pull){
         category:Joi.string().required(),
         quantity: Joi.number().integer().required(),
         supplier: Joi.objectId().required()
-    }
-    return Joi.validate(pull, schema)
+    };
+    return Joi.validate(pull, schema) ;
 }
 
 
-module.exports = router 
+module.exports = router ;

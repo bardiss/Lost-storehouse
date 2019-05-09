@@ -53,7 +53,8 @@ router.get("/products/pull", async function (req ,res){
 
 router.post("/products/pull",async function (req, res){
     const newPull = req.body.product
-    newPull.supplier = `${createId()}  // Must be removed after authentication`
+    //newPull.supplier = `${createId()}  // Must be removed after authentication`
+    newPull.supplier = '5cd2ff1974edd329fcab2d69'
     console.log(newPull.supplier)
     if(!validatePull(newPull).error)
     {

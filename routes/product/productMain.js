@@ -2,8 +2,8 @@ const express =require('express'),
 router        =express.Router(),
 Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model'),
-Product        =require('../../models/product-model');
-
+Product         =require('../../models/product-model'),
+PullRequest     = require('../../models/pullRequest');
 router.get("/",function(req,res){
     Product.find({},function(err,products){
         if(err){
@@ -46,7 +46,7 @@ router.get("/addrequests", function(req,res){
 
  router.get("/pullrequests",function(req,res){
     
-    Product.find({},function(err, products){
+    PullRequest.find({},function(err, products){
         if(err){
             console.log("ERROR");
         } else {
@@ -122,7 +122,7 @@ router.put("/decline/:id",function(req,res){
 
 
 
-router.get('/test', (req, res) => {
+router.get('/test', function(req, res) {
     Product.create({
         name: 'HP',
         price: 20000,
@@ -133,7 +133,7 @@ router.get('/test', (req, res) => {
         accepted: false
     })
     res.send('Created ya esraa')
-})
+});
 
 
 module.exports = router

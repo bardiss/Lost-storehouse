@@ -1,10 +1,17 @@
-<!DOCTYPE HTML>
-<html>
+<% include ./partials/header %>
 
-    <body>
-        <a href= "/products/addrequests"><button class='ui buttom basic green'>suppliers add requsts <%= products.length %> </button></a>
-        <a href="/products/pullrequests"><button class='ui buttom basic green'>suppliers pull requsts </button></a>
+<div style="margin: 15% 35%;" >  
+        <div class="massive ui buttons">
 
         
-    </body>
-</html>
+            <a href= "/products/addrequests"><button class='massive ui button'>suppliers add requsts  </button></a>
+            <div class="or"></div>
+            <a href="/products/pullrequests"><button class='massive ui positive button'>suppliers pull requsts </button></a>
+
+        
+    </div>
+    
+  
+          
+
+<% include ./partials/footer %>

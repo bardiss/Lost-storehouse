@@ -102,14 +102,14 @@ router.get("/products/show", async (req, res) => {
     {
         const storedProducts = await Product
             .find({
-                supplier: "5cd03fd3e23a9038e0157957",
+                //supplier: "5cd03fd3e23a9038e0157957" ,
                 accepted: true,
                 declined: false,
                 confirmed: true})
             .select('-_id name category quantity');
-    
+      
         res.status(200)
-            .send(storedProducts);
+            .render("supp_showproduct", {products: storedProducts});
     
     }
     catch(err)
@@ -119,6 +119,12 @@ router.get("/products/show", async (req, res) => {
     }
     
 });
+//****************** DahsBoard accepted requestes************************************************* */
+
+router.get ("/suppaccepted", (req ,res) =>{
+    res.status(200).render("supp_acceptedrequest")
+
+} )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
@@ -127,14 +133,14 @@ router.get("/storing/confirmations", async (req, res) => {
     {
         const acceptedProducts = await Product
             .find({
-                supplier: "5cd03fd3e23a9038e0157957",
+                //supplier: "5cd03fd3e23a9038e0157957",
                 accepted: true,
                 declined: false, 
                 confirmed: false})
-            .select('-_id name category quantity')
+            .select('_id name category quantity')
 
         res.status(200)
-            .send(acceptedProducts)
+            .render("acceptedAdding",{products: acceptedProducts})
     }
     catch(err){
         // Printing the error

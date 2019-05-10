@@ -147,6 +147,25 @@ router.get("/storing/confirmations", async (req, res) => {
         console.log(err.message)
     }
 });
+// confirming or deciclining accepted adding orders
+router.get("/storing/confirmations/:productId", async (req, res) => {
+    try
+    {
+        const productUpdate = req.query
+        const productID = req.params.productId
+
+        await Product
+            .updateOne({_id: productID}, productUpdate);
+        
+            res.status(201)
+                .redirect('/suppliers/storing/confirmations')
+    }
+    catch(err){
+        // Printing the error
+        console.log(err.message)
+    }
+})
+
 
 
 //*********************************  showing declined storing orders *************************************************
@@ -156,9 +175,10 @@ router.get("/storing/declined", async (req, res) => {
     {
         const declindedProducts = await Product
             .find({
-                supplier: "5cd03fd3e23a9038e0157957",
+                //supplier: "5cd03fd3e23a9038e0157957",
                 accepted: false,
-                declined: true
+                declined: true,
+                confirmed: false
             })
             .select('-_id name category quantity')
         
@@ -178,13 +198,14 @@ router.get("/pulling/confirmations", async (req, res) => {
     {
         const acceptedPullings = await PullRequest
             .find({
-                supplier: "5cd03fd3e23a9038e0157957",
+                //supplier: "5cd03fd3e23a9038e0157957",
                 accepted: true,
                 declined: false, 
                 confirmed: false})
-            .select('-_id name category quantity') ;
+            .select('_id name category quantity') ;
 
-        res.send(acceptedPullings);
+        res.status(200)
+            .send(acceptedPullings);
     }
     catch(err)
     {
@@ -194,6 +215,25 @@ router.get("/pulling/confirmations", async (req, res) => {
 
 });
 
+// confirming or deciclining accepted pulling orders
+router.get("/pulling/confirmations/:pullingId", async (req, res) => {
+    try
+    {
+        const pullingUpdate = req.query
+        const pullingID = req.params.pullingID
+
+        await PullRequest
+            .updateOne({_id: pullingID}, pullingUpdate);
+        
+            res.status(201)
+                .redirect('/suppliers/pulling/confirmations')
+    }
+    catch(err){
+        // Printing the error
+        console.log(err.message)
+    }
+})
+
 
 //************************************* showing declined Pullings orders *********************************************
 
@@ -202,7 +242,7 @@ router.get("/pulling/declined", async (req, res) => {
     {
         const declindedPullings = await Product
             .find({
-                supplier: "5cd03fd3e23a9038e0157957", 
+                //supplier: "5cd03fd3e23a9038e0157957", 
                 accepted: false,
                 declined: true,
                 confirmed: false})
@@ -248,6 +288,7 @@ function validatePull(pull){
     };
     return Joi.validate(pull, schema) ;
 }
+
 
 
 module.exports = router ;

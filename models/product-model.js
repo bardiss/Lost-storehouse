@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-const Joi = require('joi')
 //******* PRODUCT ******* */
 
 const productSchema = new mongoose.Schema({
@@ -42,8 +41,6 @@ const productSchema = new mongoose.Schema({
         default: false
     }
  });
-
-
 
 
 module.exports = mongoose.model("Product" , productSchema) ;

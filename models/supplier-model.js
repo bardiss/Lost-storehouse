@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Joi = require('joi');
 //******* SUPPLIER ******* */
 // Required ==> username(unique), email(unique), password
 var SupplierSchema = new mongoose.Schema({
@@ -45,16 +44,5 @@ var SupplierSchema = new mongoose.Schema({
     }
  });
 
-function ValidateUser(user) {
-    const schema = {
-      UserName: Joi.string().min(5).max(20).required(),
-      Email: Joi.string().min(5).max(255).required().email(),
-      Password: Joi.string().min(5).max(255).required()
-    };
-    return Joi.validate(user, schema);
-}
-
-const Supplier = mongoose.model("Supplier", SupplierSchema);
-exports.Supplier  = Supplier
-exports.ValidateUser = ValidateUser 
+module.exports = mongoose.model("Supplier", SupplierSchema);
 

@@ -1,0 +1,48 @@
+<% include ./partials/header %>
+<% products.forEach(function(product){ %>
+  
+  <% if(product.accepted === false && product.declined === false){ %>
+    <div class="ui container Table">
+    <table class="ui  inverted table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th></th>
+            <th></th>
+
+          </tr>
+        </thead>
+<!--  -->
+       
+      
+        <tbody>
+          
+          <tr>
+            <td> <%= product.name %> </td>
+            <td> <%= product.category %> </td>
+            <th class="right aligned"><a href="/products/addrequests/<%=product._id %> "><button class="ui green basic button"> read more </button></a></th>
+            
+              
+          </tr>
+        
+        </tbody>
+          
+        
+          
+
+    </table>
+    </div>
+  <% }; %>
+<% }) %>
+<% include ./partials/footer %>
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ router.get("/",function(req,res){
             console.log('error');
         }
         else{
-                res.render("workerDashboard",{products:products})
+            res.render("workerDashboard",{products:products})
 
         }
     })
@@ -58,7 +58,7 @@ router.get("/addrequests", function(req,res){
    // res.render("addrequests")
  });
 
-
+/*
  router.get('/addrequests/readMore',function(req,res){
     Product.find({},function(err, found_product){
         if(err){
@@ -69,7 +69,7 @@ router.get("/addrequests", function(req,res){
         }
     });
  });
-
+*/
 
  router.get("/addrequests/:id",function(req,res){
      
@@ -96,6 +96,32 @@ router.get("/addrequests", function(req,res){
     });
 });
 
+router.get("/pullrequests/:id",function(req,res){
+     
+    PullRequest.findById(req.params.id , function(err , found_product){
+        if(err){
+            res.redirect("/products/addrequests");
+        } else {
+                res.render("showMore",{found_product :found_product});
+ 
+        }
+    });
+
+   // res.send("addrequests")
+ });
+
+
+ router.put("/pullrequests/:id",function(req,res){
+    PullRequest.findByIdAndUpdate(req.params.id , function(err,updatedProduct){
+        if(err){
+            res.redirect("/products/addrequests");
+        } else {
+            res.render("showMore",{found_product :updatedProduct});
+        }
+    });
+});
+
+
 router.put("/accept/:id",function(req,res){
     Product.findByIdAndUpdate(req.params.id, {accepted:true} ,function(err,products){
         if(err){
@@ -121,18 +147,31 @@ router.put("/decline/:id",function(req,res){
 });
 
 
+router.put("/declinePull/:id",function(req,res){
+    PullRequest.findByIdAndUpdate(req.params.id, {declined:true} ,function(err,products){
+        if(err){
+            console.log(err)
+        }else{
+            res.redirect("/pullreqests");
+            // res.render("addrequests",{products :products});
+        }
+    });
 
-router.get('/test', function(req, res) {
-    Product.create({
-        name: 'HP',
-        price: 20000,
-        supplier: "5cd2ff1974edd329fcab2d69",
-        quantity: 5,
-        category: 'Laptop',
-        description: 'Testing..',
-        accepted: false
+});
+
+
+
+router.put('/acceptpull/:id', function(req, res) {
+    founded = PullRequest.findByIdAndUpdate(req.params.id, {accepted:true} ,function(err,products){
+    Product.create(founded)
+    
+      if(err){
+          console.log(err)
+      }else{
+          res.redirect("/products/pullreqests");
+        // res.render("addrequests",{products :products});
+    }
     })
-    res.send('Created ya esraa')
 });
 
 

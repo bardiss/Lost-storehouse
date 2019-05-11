@@ -1,0 +1,49 @@
+<% include ./partials/header %>
+
+<div class="ui main text container segment">
+    <div class="ui huge header"> <%= found_product.name %> </div>
+    <div class="ui top attached ">
+        <div class="item"> <br><hr><br> 
+            
+            <div class="category">
+                <p><strong>Category :</strong>  <%= found_product.category %></p>
+            </div>
+            <br><hr>
+            <div class="quantity">
+                    <p><strong>Quantity :</strong>  <%= found_product.quantity %></p>
+                </div>
+                <br><hr>
+            <div class="description">
+                <p> <strong>Description :</strong> <%= found_product.description %></p>
+            </div>
+            <br><hr><br>
+            <div class="description">
+                <form class="ui form action" action="/products/acceptpull/<%= found_product._id %>?_method=PUT" method="POST">
+                   
+                    <button class="positive ui button"> Accept </button>
+                  
+                </form>
+        
+            </div>
+            <br><br>
+            <div class="description">
+
+                <form class="ui form action" action="/products/declinePull/<%= found_product._id %>?_method=PUT" method="POST">
+                    
+                    <button class="negative ui button"> decline </button>
+                    
+                </form>
+            </div>
+          
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<% include ./partials/footer %>

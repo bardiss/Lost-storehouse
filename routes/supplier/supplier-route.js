@@ -21,7 +21,7 @@ router.get("/product/add",function(req ,res){
 
 router.post("/product/add",async (req,res) =>{
    const newProduct = req.body.product;
-   newProduct.supplier = `${createId()}`
+   newProduct.supplier = String(createId())
    const validationResult = validateProduct(newProduct);
    if(!validationResult.error){
         try

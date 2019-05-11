@@ -1,0 +1,36 @@
+
+<% include ./partials/header %>
+
+<% products.forEach(function(product){ %>
+<div class="ui container Table">
+<table class="ui  inverted table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+       <th>Quantity</th>
+      </tr>
+    </thead>         
+    <tbody>     
+      <tr>
+        <td> <%= product.name %> </td>
+        <td> <%= product.category %> </td>
+        <td><%= product.quantity %></td> 
+        
+      </tr>
+    
+    </tbody>
+</table>
+    <div class="ui buttons">
+        <a href="/suppliers/pulling/confirmations/<%=product._id %>?confirmed=true"><button class="ui blue button"> Accept</button> </a>
+        <div class="or"></div>
+        <a href="/suppliers/pulling/confirmations/<%=product._id %>?declined=true&accepted=false"><button class="ui button"> Decline </button> </a>
+    </div>
+
+</div>
+<% }); %>
+
+<% include ./partials/footer %>
+
+
+

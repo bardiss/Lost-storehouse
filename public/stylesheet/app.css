@@ -45,3 +45,9 @@ background-color: rgb(0, 0, 0)  ;
     
 }
 
+/***************** New product style ******************/
+.newproduct {
+margin-block-start: 80px ;
+margin-block-end: 40px ;
+}
+

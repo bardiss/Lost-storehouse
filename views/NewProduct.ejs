@@ -7,13 +7,10 @@
         
         <div class="field">
             <label>name</label>
-            <input required type="text" placeholder="name" name="product[name]">
+            <input required type="text" minlength ="3" maxlength ="255" placeholder="name" name="product[name]">
         </div>
 
-        <div class="field">
-            <label>supplier </label>
-            <input required type="text" placeholder="supplier" name="product[supplier]">
-        </div>
+        
 
         <div class="field">
             <label>category</label>
@@ -28,12 +25,12 @@
 
         <div class="field">
             <label>price</label>
-            <input required type="text" placeholder="price" name="product[price]">
+            <input required type="number" placeholder="price" name="product[price]">
         </div>
 
         <div class="field">
             <label>quantity</label>
-            <input required type="text" placeholder="quantity" name="product[quantity]">
+            <input required type="number" step="1" min="0" max="1000000" placeholder="quantity" name="product[quantity]">
         </div>
 
         <div class="field">

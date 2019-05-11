@@ -11,7 +11,6 @@ router.get("/",function(req,res){
         .render("SupplierDashboard");
 });
 
-
 //****************************************** Storing Products **************************************
 
 // Adding new product
@@ -22,6 +21,7 @@ router.get("/product/add",function(req ,res){
 
 router.post("/product/add",async (req,res) =>{
    const newProduct = req.body.product;
+   newProduct.supplier = `${createId()}`
    const validationResult = validateProduct(newProduct);
    if(!validationResult.error){
         try
@@ -41,8 +41,7 @@ router.post("/product/add",async (req,res) =>{
    {
        // Printing the error
         console.log(validationResult.error.details[0].message);
-   }
-   
+   } 
 });
 
 // ************************************* Pulling Orders *************************************************
@@ -62,8 +61,6 @@ router.get("/products/pull", async function (req ,res){
         // Printing the error
         console.log(err.message);
     }
-    
-    
 });
 
 router.post("/products/pull",async function (req, res){
@@ -125,6 +122,12 @@ router.get ("/suppaccepted", (req ,res) =>{
     res.status(200).render("supp_acceptedrequest")
 
 } )
+//****************** DahsBoard declined requestes************************************************* */
+
+router.get ("/suppdeclined", (req ,res) =>{
+    res.status(200).render("supp_declinedrequest")
+
+} )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
@@ -166,8 +169,6 @@ router.get("/storing/confirmations/:productId", async (req, res) => {
     }
 })
 
-
-
 //*********************************  showing declined storing orders *************************************************
 
 router.get("/storing/declined", async (req, res) => {
@@ -183,7 +184,7 @@ router.get("/storing/declined", async (req, res) => {
             .select('-_id name category quantity')
         
             res.status(200)
-                .send(declindedProducts)
+                .render('supp_showdeclinedadding', {products: declindedProducts})
     }
     catch(err)
     {
@@ -191,6 +192,7 @@ router.get("/storing/declined", async (req, res) => {
         console.log(err.message)
     }
 });
+
 //******************************  showing accepted Pullings orders waiting to be confirmed ****************************
 
 router.get("/pulling/confirmations", async (req, res) => {
@@ -205,7 +207,7 @@ router.get("/pulling/confirmations", async (req, res) => {
             .select('_id name category quantity') ;
 
         res.status(200)
-            .send(acceptedPullings);
+            .render('acceptedPulling', {products: acceptedPullings})
     }
     catch(err)
     {
@@ -220,19 +222,18 @@ router.get("/pulling/confirmations/:pullingId", async (req, res) => {
     try
     {
         const pullingUpdate = req.query
-        const pullingID = req.params.pullingID
-
+        const pullingID = req.params.pullingId
         await PullRequest
             .updateOne({_id: pullingID}, pullingUpdate);
         
             res.status(201)
-                .redirect('/suppliers/pulling/confirmations')
+                .redirect('/suppliers/pulling/confirmations');
     }
     catch(err){
         // Printing the error
         console.log(err.message)
     }
-})
+});
 
 
 //************************************* showing declined Pullings orders *********************************************
@@ -240,7 +241,7 @@ router.get("/pulling/confirmations/:pullingId", async (req, res) => {
 router.get("/pulling/declined", async (req, res) => {
     try
     {
-        const declindedPullings = await Product
+        const declindedPullings = await PullRequest
             .find({
                 //supplier: "5cd03fd3e23a9038e0157957", 
                 accepted: false,
@@ -248,7 +249,8 @@ router.get("/pulling/declined", async (req, res) => {
                 confirmed: false})
             .select('-_id name category quantity');
 
-        res.send(declindedPullings);
+        res.status(200)
+            .render('supp_showdeclinedpulling', {products: declindedPullings});
     }
     catch(err)
     {
@@ -268,7 +270,7 @@ function createId(){
 // Note: it shouldn't be here :)
 function validateProduct(product){
     const schema = {
-        name: Joi.string().min(1).max(255).required(),
+        name: Joi.string().min(3).max(255).required(),
         category:Joi.string().required(),
         price: Joi.number(),
         quantity: Joi.number().integer().required(),
@@ -281,14 +283,13 @@ function validateProduct(product){
 // Note: it shouldn't be here :)
 function validatePull(pull){
     const schema = {
-        name: Joi.string().min(1).max(255).required(),
+        name: Joi.string().min(3).max(255).required(),
         category:Joi.string().required(),
         quantity: Joi.number().integer().required(),
         supplier: Joi.objectId().required()
     };
     return Joi.validate(pull, schema) ;
 }
-
 
 
 module.exports = router ;

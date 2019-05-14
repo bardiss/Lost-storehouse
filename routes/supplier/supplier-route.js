@@ -51,7 +51,13 @@ router.get("/products/pull", async function (req ,res){
     try
     {
         const result = await Product
-            .find()     
+            .find(
+                {
+                    accepted: true,
+                    declined: false,
+                    confirmed: true
+                }
+            )     
             .select('name category -_id');
 
         res.status(200)

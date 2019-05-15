@@ -285,37 +285,5 @@ router.get('/*', function(req, res) {
 });
 
 
-/*
-router.post("/employee",function(req,res){
-    Employee.create(req.body.EmployeeAccount,function(err,newProduct){
-
-        if(err){
-            console.log("can't add product post error");
-        }
-
-        else {
-            console.log("added succesfully");
-            res.redirect("/admin/admin_employees");
-        }
-    });
-});
-
-/*
-router.post("/supplier",function(req,res){
-    console.log(req.body.username,req.body.password)
-    Supplier.create(req.body.SupplierAccount,function(err,newProduct){
-
-        if(err){
-            console.log("can't add product post error");
-        }
-
-        else {
-            console.log("added succesfully");
-            res.redirect("/admin/admin_suppliers");
-        }
-    });
-});
-*/
-
 
 module.exports = router

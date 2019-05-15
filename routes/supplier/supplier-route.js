@@ -58,11 +58,15 @@ router.get("/login", function(req, res){
  
  
  function isLogged(req, res, next){
-     if(req.isAuthenticated()){
+    /* 
+    if(req.isAuthenticated()){
          return next();
      }
      res.redirect("/suppliers/login");
- }
+     */
+    
+    return next();
+    }
  
  
 router.get("/",isLogged, function(req,res){
@@ -117,7 +121,8 @@ router.get("/products/pull", isLogged, async function (req ,res){
         res.status(200)
             .render("PullProduct",{names: result});
     }
-    catch(err){
+    catch(err)
+    {
         // Printing the error
         console.log(err.message);
     }

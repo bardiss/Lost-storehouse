@@ -283,44 +283,5 @@ function validatePull(pull){
     };
     return Joi.validate(pull, schema) ;
 }
-/*
-router.get("/accept/:id",async function(req,res){
-    try
-        {
-        const addingRequest = await Product.findOne({_id: req.params.id})
-        
-        let founded = await Product.find({
-            name: addingRequest.name,
-            supplier: addingRequest.supplier,
-           category: addingRequest.category,
-            accepted: true,
-            declined: false,
-            confirmed: true
-        })
-        founded = founded[0]
-        
-        
-        if(founded )
-        {
-            await Product.findByIdAndUpdate(founded._id, {$inc: {quantity:  parseInt(addingRequest.quantity)},
-                                                                price: addingRequest.price,
-                                                                description: addingRequest.description})
-            await Product.deleteOne({_id: addingRequest._id })
-        }
 
-        else
-        {
-            await Product.findByIdAndUpdate(req.params.id, {accepted:true})
-        }
-        //res.redirect("/products");
-        
-        
-    }
-    catch(err)
-    {
-        console.log(err.message)
-    }
-
-});
-*/
 module.exports = router ;

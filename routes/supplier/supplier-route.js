@@ -64,7 +64,8 @@ router.get("/login", function(req, res){
      }
      res.redirect("/suppliers/login");
      */
-    
+
+     
     return next();
     }
  

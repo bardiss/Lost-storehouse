@@ -1,17 +1,118 @@
-<% include ./partials/header %>
+<% include ./partials/header %>\
 
-<div style="margin: 15% 35%;" >  
+<div class:'hidden' id:'add'>
+  
+        <% if(product.accepted === false && product.declined === false){ %>
+          <div class="ui container Table">
+          <table class="ui  inverted table">
+              <thead>
+                <tr>
+                  <th>Product name</th>
+                  <th>price</th>
+                  <th></th>
+                  <th></th>
+      
+                </tr>
+              </thead>
+      
+             
+            
+              <tbody>
+                
+                <tr>
+                  <td> <%= product.name %> </td>
+                  <td> <%= product.price %> </td>  
+                  <th class="right aligned"><a href="/products/addrequests/<%=product._id %> "><button class="ui green basic button"> read more </button></a></th>
+                  
+                    
+                </tr>
+              
+              </tbody>
+                
+              
+                
+      
+            </table>
+            </div>
+        <% }; %>
+      <% }) %>   
+      
+<div class:'hidden' id:'pull'>
+
+        <% products.forEach(function(product){ %>
+          
+          <% if(product.accepted === false && product.declined === false){ %>
+            <div class="ui container Table">
+            <table class="ui  inverted table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th></th>
+                    <th></th>
+        
+                  </tr>
+                </thead>
+        <!--  -->
+               
+              
+                <tbody>
+                  
+                  <tr>
+                    <td> <%= product.name %> </td>
+                    <td> <%= product.category %> </td>
+                    <th class="right aligned"><a href="/products/pullrequests/<%=product._id %> "><button class="ui green basic button"> read more </button></a></th>
+                    
+                      
+                  </tr>
+                
+                </tbody>
+                  
+                
+                  
+        
+            </table>
+            </div>
+          <% }; %>
+        <% }) %>
+        <% include ./partials/footer %>        
+        
+
+</div>
+      
+
+</div>
+<div style="margin: 15% 35%;" class:'' id:"bottons" >  
         <div class="massive ui buttons">
 
         
-            <a href= "/products/addrequests"><button class='massive ui button'>suppliers add requsts  </button></a>
+            <button class='massive ui button' id:'add-bot'>suppliers add requsts  </button>
             <div class="or"></div>
-            <a href="/products/pullrequests"><button class='massive ui positive button'>suppliers pull requsts </button></a>
+            <button class='massive ui positive button' id:'pull-bot'>suppliers pull requsts </button>
 
         
-    </div>
+        </div>
     
   
-          
+</div>          
+<script>
+
+$('#add-bot').click(function(){
+       $('#add').removeClass('hidden');
+       $('#bottons').addClass('hidden');
+       
+    });
+
+    
+$('#pull-bot').click(function(){
+       $('#pull').removeClass('hidden');
+       $('#add').addClass('hidden');
+       
+    });
+
+</script>
+$
+
+
 
 <% include ./partials/footer %>

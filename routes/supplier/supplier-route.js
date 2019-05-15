@@ -155,13 +155,47 @@ router.get("/storing/confirmations", async (req, res) => {
 router.get("/storing/confirmations/:productId", async (req, res) => {
     try
     {
-        const productUpdate = req.query
-        const productID = req.params.productId
+        // First, check if the product is confirmed
+        const confirmed = req.query.confirmed
+        if(confirmed)
+        {
+            // Yes?, so search for a such product in the database
+            const productID = req.params.productId
+            const addingRequest = await Product.findOne({_id: productID})
+            
+            let founded = await Product.find({
+                name: addingRequest.name,
+                supplier: addingRequest.supplier,
+            category: addingRequest.category,
+                accepted: true,
+                declined: false,
+                confirmed: true
+            })
+            founded = founded[0]
+            
+            // Have you find such product in the databas?
+            if(founded )
+            {
+                // if yes, so update it and remove the new request
+                await Product.findByIdAndUpdate(founded._id, {$inc: {quantity:  parseInt(addingRequest.quantity)},
+                                                                    price: addingRequest.price,
+                                                                    description: addingRequest.description})
+                await Product.deleteOne({_id: addingRequest._id })
+            }
+                // if not dound , so accept the new product by changing the confirmed to true
+            else
+            {
+                await Product.findByIdAndUpdate(productID, {confirmed:true})
+            }
+        }
 
-        await Product
-            .updateOne({_id: productID}, productUpdate);
-        
-            res.status(201)
+
+        // if the product is declined, so simply refuse it
+        else{
+            await Product.updateOne({_id: productID}, {confirmed: false, declined: true, accepted: false})
+        }
+
+        res.status(201)
                 .redirect('/suppliers/storing/confirmations')
     }
     catch(err){

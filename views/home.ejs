@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Warehouse</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet/home.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="stylesheet/Semantic-UI-CSS-master/semantic.css">
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">  
+    
+
+    </head>
+    <body>
+        
+        <div class="ui fixed inverted menu">
+            <div class="ui container">
+                <div class="header item"><i class="truck inverted icon"></i> warehouse Site</div>
+                <a href="/" class="item">Home</a>
+                <a href="#" class="item" id="contactUs">Contact Us</a>
+                
+                <div class="right menu ">
+                        <a id="HomeLogin"  class="item" >Login</a>
+                </div>
+            </div>
+        </div>
+     <div id = "buttons" class="buttonsClicked ui text segment">
+         <button class="ui button orange" id = "supplier">supplier</button>
+         <button class="ui button orange" id = "employee">employee</button>
+     </div>   
+        
+    <div class="ui  text  segment supplierClicked" id="showSupplier">
+        
+        <form class="ui form action " action="supplier/login" method="POST">
+        
+        <div class="field">
+            <label>UserName</label>
+            <input required type="text" placeholder="UserName" name="username">
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input required type="password" placeholder="Password" name="password">
+        </div>
+        
+                
+        
+
+    
+    <br>
+        <div class="field">
+        <button  class="ui orange fluid button">Login</button>
+        </div>
+
+    </form>
+    </div>
+    
+    
+     <div class="ui  text  segment employeeClicked" id="showEmployee">
+        
+        <form class="ui form action " action="employee/login" method="POST">
+        
+        <div class="field">
+            <label>UserName</label>
+            <input required type="text" placeholder="UserName" name="username">
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input required type="password" placeholder="Password" name="password">
+        </div>
+        
+                
+        
+    
+    <br>
+        <div class="field">
+        <button  class="ui orange fluid button">Login</button>
+        </div>
+
+    </form>
+    </div>
+    
+  <div class="clickedContact" id="contactMenu">  
+    <div class="ui text segment compact vertical labeled icon menu " >
+      <a class="item" target="_blank" href="https://www.facebook.com/profile.php?id=100019489390800">
+        <i class="ui circular facebook icon button"></i>
+        
+      </a>
+      <a class="item" href="https://www.linkedin.com/">
+        <i class="ui circular linkedin icon button"></i>
+        
+      </a>
+      <a class="item" href="https://www.google.com/">
+        <i class="ui circular google plus icon button"></i>
+        
+      </a>
+    </div>
+  </div>       
+       
+      
+  <!--      <div class="footer"> 
+            
+            <div id="homeContainer">
+                <button class="ui circular facebook icon button">
+                    <i class="facebook icon"></i>
+                </button>
+                
+                <button class="ui circular twitter icon button">
+                    <i class="twitter icon"></i>
+                </button>
+                
+                <button class="ui circular linkedin icon button">
+                    <i class="linkedin icon"></i>
+                </button>
+                
+                <button class="ui circular google plus icon button">
+                    <i class="google plus icon"></i>
+                </button>
+            </div>
+        </div>  -->
+        
+        
+        
+       
+        
+        
+<script>
+   
+    $('#HomeLogin').click(function(){
+       $('#buttons').toggleClass('buttonsClicked');
+       $('#showSupplier').addClass('supplierClicked');
+       $('#showEmployee').addClass('employeeClicked');
+       $('#contactMenu').addClass('clickedContact');
+       
+    });
+    
+    $('#supplier').click(function(){
+        $('#buttons').addClass('buttonsClicked');
+        $('#showSupplier').removeClass('supplierClicked')
+        
+    });
+    
+    $('#employee').click(function(){
+        $('#buttons').addClass('buttonsClicked');
+        $('#showEmployee').removeClass('employeeClicked')
+        
+    });
+    //var user = $('input[name ='type']').attr('value');
+    
+     $('#contactUs').click(function(){
+       $('#contactMenu').toggleClass('clickedContact');
+       $('#buttons').addClass('buttonsClicked');
+       $('#showSupplier').addClass('supplierClicked');
+       $('#showEmployee').addClass('employeeClicked');
+       
+       //alert("clicked");
+    });
+    
+   
+    
+</script>
+        
+       
+        
+        
+</body>
+</html>
+
+

@@ -1,8 +1,9 @@
-<% include ./partials/header %>
+<% include ./partials/newadminheader %>
 <p>hello world</p>
-<div class="ui main text container segment">
+<div class="ui main text container segment RegisterationForm">
     <div class="ui huge header">New Account </div>
-    <form class="ui form action" action="/admin/supplier" method="POST">
+    
+    <form  autocomplete="off" class="ui form action " action="/admin/supplier" method="POST">
         
         <div class="field">
             <label>FirstName</label>
@@ -17,18 +18,15 @@
 
         <div class="field">
             <label>UserName</label>
-            <input required type="text" placeholder="UserName" name="SupplierAccount[UserName]">
+            <input required type="text" autcomplete="false" id="username" placeholder="UserName" name="username">
         </div>
 
         <div class="field">
             <label>Password</label>
-            <input required type="password" placeholder="Password" name="SupplierAccount[Password]">
+            <input required type="password" placeholder="Password" name="password">
         </div>
 
         
-
-
-
         <div class="field">
             <label>CardNumber</label>
             <input required type="number" placeholder="CardNumber" name="SupplierAccount[CardNumber]">
@@ -41,12 +39,38 @@
 
         <div class="field">
             <label>ExpirationMonth</label>
-            <input required type="number" placeholder="ExpirationMonth" name="SupplierAccount[ExpirationMonth]">
+          <!--  <input required type="number" placeholder="ExpirationMonth" name="SupplierAccount[ExpirationMonth]">  -->
+            <select class="ui dropdown"  required type="number" placeholder="ExpirationMonth" name="SupplierAccount[ExpirationMonth]">
+              
+              <option value="1">Jan</option>
+              <option value="2">Feb</option>
+              <option value="3">Mar</option>
+              <option value="4">Apr</option>
+              <option value="5">May</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Aug</option>
+              <option value="9">Sep</option>
+              <option value="10">Oct</option>
+              <option value="11">Nov</option>
+              <option value="12">Dec</option>
+            </select>
         </div>
 
         <div class="field">
             <label>ExpirationYear</label>
-            <input required type="number" placeholder="ExpirationYear" name="SupplierAccount[ExpirationYear]">
+           <!-- <input required type="number" placeholder="ExpirationYear" name="SupplierAccount[ExpirationYear]">  -->
+           <select class="ui dropdown"  required type="number" placeholder="ExpirationYear" name="SupplierAccount[ExpirationYear]">
+          <%  var i = new Date().getFullYear() 
+            var j = i +5
+             for( i; i <= j ; i++){ %>
+                        <option value="<%= i %>"><%= i %></option>
+
+             <% } %>
+              
+            </select>
+            
+         
         </div>
 
         
@@ -68,11 +92,87 @@
         </div>
 
         
-
-        <button  class="ui violet basic button"> Create</button>
+        
+      <div class="hidden" id="crt-btn">  <button class="ui green button large creation" id="hidden" > Create</button> </div>
+        
 
 
     </form>
+    
+   <% suppliers.forEach(function(supplier){ %>
+    <span class="usernamecheck"><%= supplier.username %>,</span>
+    <% })%> 
+    
+   <div id="chkBtn"> 
+    <button class="ui violet button large " id = "checkButton"> Validate </button> </div>
+    
+<script>
+    
+    //$(#username).attr('value');
+    /*var sups= suppliers.username;
+    
+        console.log(sups);
+    $('#checkButton').click(function(){
+        
+         sups.forEach(function(supplier){
+        if(supplier===$('#username').val() ){
+            alert('not allow')
+        }
+    })
+    }); */
+    $('#checkButton').click(function(){
+     var users =    $('.usernamecheck').text().split(',')
+     users.push(undefined);
+     console.log(users);
+     var flag = 0;
+     for(var i = 0; i < users.length ; i++){
+         
+           if($('#username').val()===users[i]){
+             $('#username').addClass('username-border');
+             console.log($('#username').val())
+            $('#username').attr('readonly', false);
+
+             flag=0;
+             break;
+           }
+             else{
+                 flag=1;
+             }
+             
+
+             
+         
+     }
+         
+     /*
+     users.forEach(function(user){
+         if($('#username').val()===user){
+             $('#username').addClass('username-border');
+             flag=0;
+             break;
+             
+             else{
+                 flag=1;
+             }
+             
+
+             
+         }
+         
+     })*/
+            if(flag===1){
+             $('#username').removeClass('username-border');
+             $('#username').attr('readonly', true);
+             $('#chkBtn').addClass('check-button');
+             $('#crt-btn').removeClass('hidden');
+            }
+     
+            
+
+    })
+    
+</script>
+
 
 
 </div>

@@ -1,0 +1,109 @@
+i.icon {
+    font-size:2em;
+}
+
+.container.main {
+    margin-top:7em;
+}
+
+#delete {
+    display:inline;
+}
+.ui.violet.button{
+    margin-left: 85%
+}
+.ui.green.button.creation{
+    margin-left: 85%
+}
+.ui.main.text.container.segment.RegisterationForm{
+    margin-bottom: 50px;
+    font-family: 'Philosopher', sans-serif;
+}
+.ui.huge.header{
+    font-family: 'Philosopher', sans-serif;
+}
+
+.ui.cards > .card {
+    margin-top:5em;
+}
+.ui.huge.header {
+   text-align: center;
+   
+}
+
+.ui.green.basic.button{
+    margin: 7px;
+    font-size: 18px;
+    font-family:  'Philosopher', sans-serif;
+}
+
+.ui.orange.button{
+    margin-top: 40px;
+    margin-left: 25%;
+    width: 50%;
+}
+
+
+#body-login{
+    background-color: #2b3237;
+
+}
+body.bg{
+
+    background-image: url("../background.jpg"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+
+}
+
+
+.container.Table{
+    margin-top: 100px;
+    
+    
+}
+.ui.inverted.table{
+    padding-left: 10px;
+    padding-right: 10px;
+    
+}
+
+#AdminContainer{
+    margin-top: 200px;
+}
+.ui.fixed.inverted.menu{
+    font-size: medium;
+    font-family:  'Philosopher', sans-serif;
+}
+
+body{
+    font-family:  'Philosopher', sans-serif;
+}
+td{
+    font-size: 18px;
+}
+th{
+    font-size: 15px;
+}
+
+.handleArchiving{
+    display: none;
+}
+
+
+.usernamecheck{
+    display:none;
+}
+
+#username.username-border{
+    border-color: red
+}
+
+.check-button{
+    display:none;
+}
+.hidden{
+    display: none;
+}

@@ -1,4 +1,4 @@
-<% include ./partials/header %>
+<% include ./partials/newadminheader %>
 <p>hello world</p>
 <div class="ui main text container segment">
     <div class="ui huge header">New Account </div>
@@ -15,14 +15,14 @@
             <input required type="text" placeholder="LastName" value="<%= Supplier.LastName %>"  name="SupplierAccount[LastName]">
         </div>
 
-        <div class="field">
+  <!--      <div class="field">
             <label>UserName</label>
-            <input required type="text" placeholder="UserName" value="<%= Supplier.UserName %>" name="SupplierAccount[UserName]">
-        </div>
+            <input required type="text" placeholder="UserName" value="<%= Supplier.username %>" name="SupplierAccount[username]">
+        </div> -->
 
         <div class="field">
             <label>Password</label>
-            <input required type="password" placeholder="Password" value="<%= Supplier.Password %>" name="SupplierAccount[Password]">
+            <input required type="password" placeholder="Password" value="<%= Supplier.password %>" name="SupplierAccount[password]">
         </div>
 
         
@@ -69,7 +69,7 @@
 
         
 
-        <button  class="ui violet basic button"> Update</button>
+        <button  class="ui violet  button"> Update</button>
 
 
     </form>

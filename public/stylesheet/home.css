@@ -1,0 +1,60 @@
+#homeContainer{
+   margin-top:  53px; 
+   margin-left: 40%;
+   padding-top:25px;
+    
+}
+.ui.fixed.inverted.menu{
+    font-family: 'Philosopher', sans-serif;
+    font-size: large;
+}
+
+
+html{
+    background-image: url("../bkg5.jpg");
+    background-repeat: no-repeat;
+    
+    
+}
+
+.footer{
+    
+    height:89px;
+    background: transparent;
+}
+.ui.text.segment{
+    height: 290px;
+    width: 260px;
+    float: right;
+    margin-top: 53px;
+    margin-right: 15%;
+    
+}
+.buttonsClicked{
+    display: none;
+}
+.supplierClicked{
+    display: none;
+}
+.employeeClicked{
+    display: none;
+}
+.clickedContact{
+    display: none;
+}
+
+#contactMenu{
+    width: 100px;
+    margin-top: 53px;
+    margin-left: 32%;
+}
+#buttons{
+    height: 65px;
+    width: 236px;
+}
+
+
+
+    
+
+

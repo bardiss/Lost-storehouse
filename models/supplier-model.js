@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+passportLocalMongoose = require("passport-local-mongoose");
 //******* SUPPLIER ******* */
 // Required ==> username(unique), email(unique), password
 var SupplierSchema = new mongoose.Schema({
-    UserName   : {
+    username   : {
         type: String,
         minlength: 5,
         maxlength: 20,
@@ -16,7 +17,7 @@ var SupplierSchema = new mongoose.Schema({
         maxlength: 255,
         unique: true
     },
-    Password   : {
+    password   : {
         type: String,
         required: true,
         minlength: 5,
@@ -44,5 +45,6 @@ var SupplierSchema = new mongoose.Schema({
     }
  });
 
-module.exports = mongoose.model("Supplier", SupplierSchema);
+ SupplierSchema.plugin(passportLocalMongoose);
 
+module.exports = mongoose.model("Supplier", SupplierSchema);

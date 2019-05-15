@@ -3,10 +3,53 @@
     <head>
         <title>ADMIN</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="stylesheet/admin.css">
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+
     </head>
     <body>
-        <a href= "/admin/admin_suppliers"><button id ="supplier">Manage Supplier</button></a>
-        <a href="/admin/admin_employees"><button id = "employee">Manage Employee</button></a>
+        
+        <div class="ui fixed inverted menu">
+            <div class="ui container">
+                <div class="header item"><i class="truck inverted icon"></i> warehouse Site</div>
+                <a href="/admin" class="item">Home</a>
+                
+                    <div class="right menu ">
+                             <% if(!currentUser){ %>
+                        
+                        <a href="/login" class="item " >L</a>
+                        <a href="/register" class="item ">Sign Up</a>
+                    <% } else { %>
+                        <a href="#" class="item right">Signed In As <%= currentUser.username %></a>
+                        <a href="/admin/logout" class="item " >Logout</a>
+                    <% } %>
+                            
+                        </div>
+                   
+                
+            
+            </div>
+        </div>
+        <div class="ui container" id="AdminContainer">
+
+        <div class="eight wide column">
+            <a href= "/admin/admin_suppliers"><button class="fluid green ui button" id ="btn">Manage Supplier</button></a>
+            <a href="admin/admin_employees/"><button class="fluid green green ui button" id = "btn">Manage Employee</button></a>
+        </div>
+          
+         <div class="eight wide column">
+            <a href="/admin/supplier/new"><button class="fluid green ui button" id = "btn">Create Supplier</button></a>
+            <a href="/admin/employee/new"><button class="fluid  green ui button" id = "btn">Create Employee</button></a>
+        </div>
+         
+            
+
+        </div>
+        
+        
+        
 
         
     </body>

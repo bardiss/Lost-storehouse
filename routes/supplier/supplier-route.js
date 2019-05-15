@@ -21,7 +21,7 @@ router.get("/product/add",function(req ,res){
 
 router.post("/product/add",async (req,res) =>{
    const newProduct = req.body.product;
-   newProduct.supplier = String(createId())
+   newProduct.supplier = String(createId())    // supplier_id
    const validationResult = validateProduct(newProduct);
    if(!validationResult.error){
         try
@@ -53,12 +53,13 @@ router.get("/products/pull", async function (req ,res){
         const result = await Product
             .find(
                 {
+                        // supplier_id
                     accepted: true,
                     declined: false,
                     confirmed: true
                 }
             )     
-            .select('name category -_id');
+            .select('name category quantity -_id');
 
         res.status(200)
             .render("PullProduct",{names: result});
@@ -71,8 +72,7 @@ router.get("/products/pull", async function (req ,res){
 
 router.post("/products/pull",async function (req, res){
     const newPull = req.body.product;
-    //newPull.supplier = `${createId()}  // Must be removed after authentication`
-    newPull.supplier = '5cd2ff1974edd329fcab2d69';
+    newPull.supplier = '5cd2ff1974edd329fcab2d69';        // supplier_id
 
     const validationResult = validatePull(newPull);
     if(!validationResult.error)
@@ -105,7 +105,7 @@ router.get("/products/show", async (req, res) => {
     {
         const storedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957" ,
+                    // supplier_id
                 accepted: true,
                 declined: false,
                 confirmed: true})
@@ -142,7 +142,7 @@ router.get("/storing/confirmations", async (req, res) => {
     {
         const acceptedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
+                    // supplier_id
                 accepted: true,
                 declined: false, 
                 confirmed: false})
@@ -182,7 +182,7 @@ router.get("/storing/declined", async (req, res) => {
     {
         const declindedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
+                    // supplier_id
                 accepted: false,
                 declined: true,
                 confirmed: false
@@ -199,48 +199,6 @@ router.get("/storing/declined", async (req, res) => {
     }
 });
 
-//******************************  showing accepted Pullings orders waiting to be confirmed ****************************
-
-router.get("/pulling/confirmations", async (req, res) => {
-    try
-    {
-        const acceptedPullings = await PullRequest
-            .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
-                accepted: true,
-                declined: false, 
-                confirmed: false})
-            .select('_id name category quantity') ;
-
-        res.status(200)
-            .render('acceptedPulling', {products: acceptedPullings})
-    }
-    catch(err)
-    {
-        // Printing the error
-        console.log(err.message)
-    }
-
-});
-
-// confirming or deciclining accepted pulling orders
-router.get("/pulling/confirmations/:pullingId", async (req, res) => {
-    try
-    {
-        const pullingUpdate = req.query
-        const pullingID = req.params.pullingId
-        await PullRequest
-            .updateOne({_id: pullingID}, pullingUpdate);
-        
-            res.status(201)
-                .redirect('/suppliers/pulling/confirmations');
-    }
-    catch(err){
-        // Printing the error
-        console.log(err.message)
-    }
-});
-
 
 //************************************* showing declined Pullings orders *********************************************
 
@@ -249,7 +207,7 @@ router.get("/pulling/declined", async (req, res) => {
     {
         const declindedPullings = await PullRequest
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957", 
+                    // supplier_id 
                 accepted: false,
                 declined: true,
                 confirmed: false})

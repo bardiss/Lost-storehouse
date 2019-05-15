@@ -1,13 +1,77 @@
 <% include ./partials/suppheader %>
-  <body class=" ui inverted segment">
-        <div class="container">
-            <a href= "/suppliers/product/add"><button class="fluid ui inverted green button  " >Add New Product </button></a>
-            <a href="/suppliers/products/pull"><button class=" fluid ui inverted green button ">Pull Product</button></a>
-            <a href="/suppliers/products/show"><button class=" fluid ui inverted green button">Show Product</button></a>
-            <a href="/suppliers/suppaccepted"><button class=" fluid ui inverted green button ">accepted requests</button></a>
-            <a href="/suppliers/suppdeclined"><button class=" fluid ui inverted green button ">decline requests</button></a>
-        </div>
-        
-</body>
-<% include ./partials/suppfooter %>
+  
 
+<!-- add new product-->
+<div class="newproduct hidden" id="newprod">
+
+  <div class="ui main text container segment">
+      <div class="ui huge header">New Product </div>
+      <form class="ui form action" action="/suppliers/product/add" method="POST">
+          
+          <div class="field">
+              <label>name</label>
+              <input required type="text" minlength ="3" maxlength ="255" placeholder="name" name="product[name]">
+          </div>
+  
+          
+  
+          <div class="field">
+              <label>category</label>
+              <select required name="product[category]" > 
+                  <option value ="Laptop">Laptop</option>
+                  <option value="TV">TV</option>
+                  <option value="Smartphones">Smartphones</option>
+              </select>
+          </div>
+  
+  
+  
+          <div class="field">
+              <label>price</label>
+              <input required type="number" placeholder="price" name="product[price]">
+          </div>
+  
+          <div class="field">
+              <label>quantity</label>
+              <input required type="number" step="1" min="0" max="1000000" placeholder="quantity" name="product[quantity]">
+          </div>
+  
+          <div class="field">
+              <label>description</label>
+              <textarea required name="product[description]"></textarea>
+          </div>
+  
+          <input type="submit" class="ui inverted blue  button">
+  
+  
+      </form>
+  
+  
+  </div>
+</div>
+
+      <div id="buttons" >
+        <div class="dashcontainer">
+
+            <a class="cont"> <button class="fluid ui  blue button  " id="btn" >Add New Product </button> </a>
+          
+            <a class="cont" href="/suppliers/products/pull"><button class=" fluid ui  blue button ">Pull Product</button></a>
+            <a class="cont" href="/suppliers/products/show"><button class=" fluid ui  blue button">Show Product</button></a>
+            <a class="cont" href="/suppliers/suppaccepted"><button class=" fluid ui  blue button ">accepted requests</button></a>
+            <a class="cont" href="/suppliers/suppdeclined"><button class=" fluid ui  blue button ">decline requests</button></a>
+        </div>
+      </div>
+
+        <script> 
+        // add new product
+          $('#btn').click(function(){
+          $('#buttons').addClass('hidden');
+          $('#newprod').removeClass('hidden');
+
+          });
+
+        </script>
+ 
+
+
+<% include ./partials/suppfooter %>

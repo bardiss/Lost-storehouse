@@ -5,6 +5,13 @@ PullRequest = require('../../models/pullRequest')
 const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose')
+//jquery setup
+var jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM();
+const { document } = (new JSDOM('')).window;
+global.document = document;
+var $ = require("jquery")(window);
 // **************************************** Main Dashboard ****************************************
 router.get("/",function(req,res){
     res.status(200)
@@ -12,12 +19,6 @@ router.get("/",function(req,res){
 });
 
 //****************************************** Storing Products **************************************
-
-// Adding new product
-router.get("/product/add",function(req ,res){
-    res.status(200)
-        .render("NewProduct");
-});
 
 router.post("/product/add",async (req,res) =>{
    const newProduct = req.body.product;
@@ -254,6 +255,45 @@ function validatePull(pull){
     };
     return Joi.validate(pull, schema) ;
 }
+
+
+
+
+router.put("/accept/:id",async function(req,res){
+    try{
+        const addingRequest = await Product.find({_id: req.params.id})
+        const founded = await Product.find({name: addingRequest.name, 
+            supplier: addingRequest.supplier,
+             category: addingRequest.category,
+            accepted: true,
+            declined: false,
+            confirmed: true})
+        console.log(founded)
+        
+        if(founded)
+        {
+            await Product.findByIdAndUpdate(founded._id, {$inc: {quantity:  parseInt(addingRequest.quantity)},
+                                                                price: addingRequest.price,
+                                                                description: addingRequest.description})
+            await Product.deleteOne({_id: addingRequest._id })
+        }
+
+        else
+        {
+            await Product.findByIdAndUpdate(req.params.id, {accepted:true})
+        }
+        res.redirect("/products");
+        
+    }
+    catch(err)
+    {
+        console.log(err.message)
+    }
+
+});
+
+
+
 
 
 module.exports = router ;

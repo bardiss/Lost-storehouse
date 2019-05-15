@@ -49,6 +49,10 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
+
+
 function AdminFunc(req, res, next){
 
     passport.use(new LocalStrategy(Admin.authenticate()));
@@ -75,7 +79,6 @@ function SupplierFunc(req,res,next){
 }
 
 
-
 // Connecting to DataBase Proceddure
 const dbName = config.get("dbName")
 mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }) 
@@ -84,7 +87,7 @@ mongoose.connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true,
 
 // Redirecting to Routes
 app.use("/admin",AdminFunc, adminRoute)
-app.use("/supplier",SupplierFunc,supplierRoute);
+app.use("/suppliers",SupplierFunc,supplierRoute);
 app.use("/products",EmployeeFunc,productRoute); 
  
 app.get("/*", function(req, res){

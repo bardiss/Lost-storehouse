@@ -59,7 +59,7 @@ router.get("/supplier/new",isLoggedIn, function(req,res){
 });
 //============ Admin Registration ==============
 
-Admin.register({username: "mahmoud"}, "321" );
+//Admin.register({username: "mahmoud"}, "321" );
        
 
 

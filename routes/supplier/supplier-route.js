@@ -1,7 +1,13 @@
 const express   =require("express"),
 router          =express.Router()
 const Product  =require('../../models/product-model'),
-PullRequest = require('../../models/pullRequest')
+PullRequest = require('../../models/pullRequest'),
+passport              = require("passport"),
+LocalStrategy         = require("passport-local"),
+passportLocalMongoose = require("passport-local-mongoose"),
+Supplier = require('../../models/supplier-model'),
+bodyParser            = require('body-parser');
+router.use(bodyParser.urlencoded({extended: true}));
 const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose')
@@ -13,14 +19,60 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 var $ = require("jquery")(window);
 // **************************************** Main Dashboard ****************************************
-router.get("/",function(req,res){
+
+
+router.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+ });
+ 
+ router.use(require("express-session")({
+     secret: "our team is great",  
+     resave: false,
+     saveUninitialized: false
+ }));
+ router.use(passport.initialize());
+ router.use(passport.session());
+ 
+ passport.use(new LocalStrategy(Supplier.authenticate()));
+ passport.serializeUser(Supplier.serializeUser());
+ passport.deserializeUser(Supplier.deserializeUser());
+
+ 
+router.get("/login", function(req, res){
+    
+    res.render("supplogin"); 
+ });    
+     
+ router.post("/login", passport.authenticate("local", {
+     successRedirect: "/suppliers",
+     failureRedirect: "/suppliers/login"
+ }) ,function(req, res){
+ });
+ 
+ router.get("/logout", function(req, res){
+     req.logout();
+     res.redirect("/suppliers");  
+ }); 
+ 
+ 
+ 
+ function isLogged(req, res, next){
+     if(req.isAuthenticated()){
+         return next();
+     }
+     res.redirect("/suppliers/login");
+ }
+ 
+ 
+router.get("/",isLogged, function(req,res){
     res.status(200)
         .render("SupplierDashboard");
 });
 
 //****************************************** Storing Products **************************************
 
-router.post("/product/add",async (req,res) =>{
+router.post("/product/add", isLogged,async (req,res) =>{
    const newProduct = req.body.product;
    newProduct.supplier = String(createId())    // supplier_id
    const validationResult = validateProduct(newProduct);
@@ -48,7 +100,7 @@ router.post("/product/add",async (req,res) =>{
 // ************************************* Pulling Orders *************************************************
 // Adding a new Pull order
 
-router.get("/products/pull", async function (req ,res){
+router.get("/products/pull", isLogged, async function (req ,res){
     try
     {
         const result = await Product
@@ -71,7 +123,7 @@ router.get("/products/pull", async function (req ,res){
     }
 });
 
-router.post("/products/pull",async function (req, res){
+router.post("/products/pull", isLogged,async function (req, res){
     const newPull = req.body.product;
     newPull.supplier = '5cd2ff1974edd329fcab2d69';        // supplier_id
 
@@ -101,7 +153,7 @@ router.post("/products/pull",async function (req, res){
 
 //***************************************** Showing Products already stored ****************************************
 
-router.get("/products/show", async (req, res) => {
+router.get("/products/show", isLogged, async (req, res) => {
     try 
     {
         const storedProducts = await Product
@@ -125,14 +177,14 @@ router.get("/products/show", async (req, res) => {
 });
 //****************** DahsBoard declined requestes************************************************* */
 
-router.get ("/suppdeclined", (req ,res) =>{
+router.get ("/suppdeclined", isLogged, (req ,res) =>{
     res.status(200).render("supp_declinedrequest")
 
 } )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
-router.get("/storing/confirmations", async (req, res) => {
+router.get("/storing/confirmations", isLogged, async (req, res) => {
     try
     {
         const acceptedProducts = await Product
@@ -152,7 +204,7 @@ router.get("/storing/confirmations", async (req, res) => {
     }
 });
 // confirming or deciclining accepted adding orders
-router.get("/storing/confirmations/:productId", async (req, res) => {
+router.get("/storing/confirmations/:productId", isLogged, async (req, res) => {
     try
     {
         // First, check if the product is confirmed
@@ -206,7 +258,7 @@ router.get("/storing/confirmations/:productId", async (req, res) => {
 
 //*********************************  showing declined storing orders *************************************************
 
-router.get("/storing/declined", async (req, res) => {
+router.get("/storing/declined", isLogged, async (req, res) => {
     try
     {
         const declindedProducts = await Product
@@ -231,7 +283,7 @@ router.get("/storing/declined", async (req, res) => {
 
 //************************************* showing declined Pullings orders *********************************************
 
-router.get("/pulling/declined", async (req, res) => {
+router.get("/pulling/declined", isLogged, async (req, res) => {
     try
     {
         const declindedPullings = await PullRequest
@@ -251,6 +303,13 @@ router.get("/pulling/declined", async (req, res) => {
         console.log(err.message)
     }
 });
+
+router.get('/*', function(req, res) {
+    res.send("404 page not found don't come here again!!!! seriosuly i'm not joking don't hack us pleaseee");
+    
+});
+
+
 
 // ******************** Data Validation Section ******************
 // crreating new object id (instead supplier id which should be come from authentication)

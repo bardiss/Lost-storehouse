@@ -123,12 +123,6 @@ router.get("/products/show", async (req, res) => {
     }
     
 });
-//****************** DahsBoard accepted requestes************************************************* */
-
-router.get ("/suppaccepted", (req ,res) =>{
-    res.status(200).render("supp_acceptedrequest")
-
-} )
 //****************** DahsBoard declined requestes************************************************* */
 
 router.get ("/suppdeclined", (req ,res) =>{
@@ -255,22 +249,24 @@ function validatePull(pull){
     };
     return Joi.validate(pull, schema) ;
 }
-
-
-
-
-router.put("/accept/:id",async function(req,res){
-    try{
-        const addingRequest = await Product.find({_id: req.params.id})
-        const founded = await Product.find({name: addingRequest.name, 
+/*
+router.get("/accept/:id",async function(req,res){
+    try
+        {
+        const addingRequest = await Product.findOne({_id: req.params.id})
+        
+        let founded = await Product.find({
+            name: addingRequest.name,
             supplier: addingRequest.supplier,
-             category: addingRequest.category,
+           category: addingRequest.category,
             accepted: true,
             declined: false,
-            confirmed: true})
-        console.log(founded)
+            confirmed: true
+        })
+        founded = founded[0]
         
-        if(founded)
+        
+        if(founded )
         {
             await Product.findByIdAndUpdate(founded._id, {$inc: {quantity:  parseInt(addingRequest.quantity)},
                                                                 price: addingRequest.price,
@@ -282,7 +278,8 @@ router.put("/accept/:id",async function(req,res){
         {
             await Product.findByIdAndUpdate(req.params.id, {accepted:true})
         }
-        res.redirect("/products");
+        //res.redirect("/products");
+        
         
     }
     catch(err)
@@ -291,9 +288,5 @@ router.put("/accept/:id",async function(req,res){
     }
 
 });
-
-
-
-
-
+*/
 module.exports = router ;

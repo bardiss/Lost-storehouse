@@ -4,6 +4,7 @@ Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model'),
 Product         =require('../../models/product-model'),
 PullRequest     = require('../../models/pullRequest');
+
 router.get("/",function(req,res){
     Product.find({},function(err,products){
         if(err){
@@ -152,7 +153,7 @@ router.put("/declinePull/:id",function(req,res){
         if(err){
             console.log(err)
         }else{
-            res.redirect("/pullreqests");
+            res.redirect("/products/pullrequests");
             // res.render("addrequests",{products :products});
         }
     });
@@ -162,13 +163,13 @@ router.put("/declinePull/:id",function(req,res){
 
 
 router.put('/acceptpull/:id', function(req, res) {
-    founded = PullRequest.findByIdAndUpdate(req.params.id, {accepted:true} ,function(err,products){
+    founded = PullRequest.findByIdAndUpdate(req.params.id, {accepted:false} ,function(err,products){
     Product.create(founded)
     
       if(err){
           console.log(err)
       }else{
-          res.redirect("/products/pullreqests");
+          res.redirect("/products/pullrequests");
         // res.render("addrequests",{products :products});
     }
     })

@@ -4,11 +4,8 @@ Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model'),
 Product         =require('../../models/product-model'),
 PullRequest     = require('../../models/pullRequest');
-//<<<<<<< HEAD
-//=======
 const mongoose = require('mongoose')
 
-//>>>>>>> 848967478836f852dba3cd28d7e021a87e051927
 
 router.get("/",function(req,res){
     Product.find({},function(err,products){
@@ -160,17 +157,6 @@ router.put("/declinePull/:id",function(req,res){
 
 
 
-<<<<<<< HEAD
-router.put('/acceptpull/:id', function(req, res) {
-    founded = PullRequest.findByIdAndUpdate(req.params.id, {accepted:false} ,function(err,products){
-    Product.create(founded)
-    
-      if(err){
-          console.log(err)
-      }else{
-          res.redirect("/products/pullrequests");
-        // res.render("addrequests",{products :products});
-=======
 
 router.put('/acceptpull/:id',async function (req, res) {
 
@@ -181,7 +167,6 @@ router.put('/acceptpull/:id',async function (req, res) {
         , {$inc: {quantity: - parseInt(foundedPull.quantity)}})
 
     res.redirect("/products/pullrequests");
->>>>>>> 848967478836f852dba3cd28d7e021a87e051927
     }
     catch(err)
     {

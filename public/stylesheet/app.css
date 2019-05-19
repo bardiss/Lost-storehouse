@@ -51,16 +51,3 @@ margin-block-start: 80px ;
 margin-block-end: 40px ;
 }
 
-
-
-
-#element1 {float:left;}
-#element2 {float:right;}
-
-.hidden{
-    display:none;
-}
-
-#mrg{
-    margin: 15% 35%;
-}

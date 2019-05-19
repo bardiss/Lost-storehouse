@@ -24,9 +24,21 @@ router.use(require("express-session")({
 router.use(passport.initialize());
 router.use(passport.session());
 
-passport.use(new LocalStrategy(Admin.authenticate()));
+
+passport.use('adminLocal', new LocalStrategy(Admin.authenticate()));
+
+passport.serializeUser(function(user, done) { 
+    done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+    if(user!=null)
+    done(null,user);
+    });
+/*    
 passport.serializeUser(Admin.serializeUser());
 passport.deserializeUser(Admin.deserializeUser());
+*/
 
 
 
@@ -94,7 +106,7 @@ router.get("/hidden/login", function(req, res){
    res.render("login"); 
 });    
     
-router.post("/hidden", passport.authenticate("local", {
+router.post("/hidden", passport.authenticate("adminLocal", {
     successRedirect: "/admin",
     failureRedirect: "/admin/hidden/login"
 }) ,function(req, res){
@@ -106,13 +118,46 @@ router.get("/logout", function(req, res){
 }); 
 
 
-
+/*
 function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
+    Admin.findById(req.user._id,function(err,foundAdmin){
+        if (err) {
+            console.log('err')
+            console.log(req.body._id)
+        } else {
+                 
+        if(req.isAuthenticated() && foundAdmin.role==="Admin"){
+        console.log(foundAdmin.role)
         return next();
     }
+        }
+    });
+    
     res.redirect("/admin/hidden/login");
 }
+*/
+
+
+
+ function isLoggedIn(req, res, next){
+     if(req.user.role==="Supplier"){
+         res.send('you are already logged in as admin logout to login as another account')
+     }
+     else if (req.user.role==="Employee") {
+        res.send('you are already logged in as supplier logout to login as another account')
+
+     }
+     
+     else {
+          
+            if(req.isAuthenticated()&& req.user.role==="Admin" && req.user.Archive!==1 ){
+                return next();
+                }
+     
+            res.redirect("/admin/hidden/login");
+         }
+   
+    }
 
     
 //============== EMPLOYEE REGISTRATION =============    

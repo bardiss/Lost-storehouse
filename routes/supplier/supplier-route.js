@@ -34,9 +34,20 @@ router.use(function(req, res, next){
  router.use(passport.initialize());
  router.use(passport.session());
  
- passport.use(new LocalStrategy(Supplier.authenticate()));
+ passport.use('supplierLocal',new LocalStrategy(Supplier.authenticate()));
+ 
+ passport.serializeUser(function(user, done) { 
+    done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+    if(user!=null)
+    done(null,user);
+    });
+/*    
  passport.serializeUser(Supplier.serializeUser());
  passport.deserializeUser(Supplier.deserializeUser());
+ */
 
  
 router.get("/login", function(req, res){
@@ -44,7 +55,7 @@ router.get("/login", function(req, res){
     res.render("supplogin"); 
  });    
      
- router.post("/login", passport.authenticate("local", {
+ router.post("/login", passport.authenticate("supplierLocal", {
      successRedirect: "/suppliers",
      failureRedirect: "/suppliers/login"
  }) ,function(req, res){
@@ -57,18 +68,26 @@ router.get("/login", function(req, res){
  
  
  
- function isLogged(req, res, next){
-    /* 
-    if(req.isAuthenticated()){
-         return next();
-     }
-     res.redirect("/suppliers/login");
-     */
-
-     
-    return next();
-    }
  
+ function isLogged(req, res, next){
+     if(req.user.role==="Admin"){
+         res.send('you are already logged in as admin logout to login as another account')
+     }
+     else if (req.user.role==="Employee") {
+        res.send('you are already logged in as supplier logout to login as another account')
+
+     }
+     
+     else {
+          
+            if(req.isAuthenticated()&& req.user.role==="Supplier" && req.user.Archive!==1 ){
+                return next();
+                }
+     
+            res.redirect("/suppliers/login");
+         }
+   
+    }
  
 router.get("/",isLogged, function(req,res){
     res.status(200)
@@ -181,7 +200,12 @@ router.get("/products/show", isLogged, async (req, res) => {
     }
     
 });
+//****************** DahsBoard declined requestes************************************************* */
 
+router.get ("/suppdeclined", isLogged, (req ,res) =>{
+    res.status(200).render("supp_declinedrequest")
+
+} )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
@@ -204,7 +228,6 @@ router.get("/storing/confirmations", isLogged, async (req, res) => {
         console.log(err.message)
     }
 });
-
 // confirming or deciclining accepted adding orders
 router.get("/storing/confirmations/:productId", isLogged, async (req, res) => {
     try

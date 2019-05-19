@@ -3,11 +3,83 @@ router        =express.Router(),
 Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model'),
 Product         =require('../../models/product-model'),
-PullRequest     = require('../../models/pullRequest');
-const mongoose = require('mongoose')
+PullRequest     = require('../../models/pullRequest'),
+passport              = require("passport"),
+LocalStrategy         = require("passport-local"),
+passportLocalMongoose = require("passport-local-mongoose"),
+mongoose = require('mongoose')
 
 
-router.get("/",function(req,res){
+router.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+ });
+ 
+ router.use(require("express-session")({
+     secret: "our team is great",  
+     resave: false,
+     saveUninitialized: false
+ }));
+ router.use(passport.initialize());
+ router.use(passport.session());
+ 
+ passport.use('employeeLocal',new LocalStrategy(Employee.authenticate()));
+ passport.serializeUser(function(user, done) { 
+    done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+    if(user!=null)
+    done(null,user);
+    });
+ 
+ 
+ /*
+ passport.serializeUser(Employee.serializeUser());
+ passport.deserializeUser(Employee.deserializeUser());
+*/
+ 
+router.get("/login", function(req, res){
+    
+    res.render("emplogin"); 
+ });    
+     
+ router.post("/login", passport.authenticate("employeeLocal", {
+     successRedirect: "/products",
+     failureRedirect: "/products/login"
+ }) ,function(req, res){
+ });
+ 
+ router.get("/logout", function(req, res){
+     req.logout();
+     res.redirect("/products");  
+ }); 
+ 
+ 
+ 
+ function isLogged(req, res, next){
+     if(req.user.role==="Admin"){
+         res.send('you are already logged in as admin logout to login as another account')
+     }
+     else if (req.user.role==="Supplier") {
+        res.send('you are already logged in as supplier logout to login as another account')
+
+     }
+     
+     else {
+          
+            if(req.isAuthenticated()&& req.user.role==="Employee" && req.user.Archive!==1 ){
+                return next();
+                }
+     
+            res.redirect("/products/login");
+         }
+   
+    }
+ 
+
+
+router.get("/",isLogged,function(req,res){
     Product.find({},function(err,products){
         if(err){
             console.log('error');
@@ -21,7 +93,7 @@ router.get("/",function(req,res){
 });
 
 
-router.get("/addrequests", function(req,res){
+router.get("/addrequests",isLogged, function(req,res){
  
     Product.find({},function(err, products){
         if(err){
@@ -38,7 +110,7 @@ router.get("/addrequests", function(req,res){
   
 
 
- router.get("/pullrequests",function(req,res){
+ router.get("/pullrequests",isLogged,function(req,res){
     
     PullRequest.find({},function(err, products){
         if(err){
@@ -65,7 +137,7 @@ router.get("/addrequests", function(req,res){
  });
 */
 
- router.get("/addrequests/:id",function(req,res){
+ router.get("/addrequests/:id",isLogged,function(req,res){
      
     Product.findById(req.params.id , function(err , found_product){
         if(err){
@@ -80,7 +152,7 @@ router.get("/addrequests", function(req,res){
  });
 
 
- router.put("/addrequests/:id",function(req,res){
+ router.put("/addrequests/:id",isLogged,function(req,res){
     Product.findByIdAndUpdate(req.params.id , function(err,updatedProduct){
         if(err){
             res.redirect("/products/addrequests");
@@ -90,7 +162,7 @@ router.get("/addrequests", function(req,res){
     });
 });
 
-router.get("/pullrequests/:id",function(req,res){
+router.get("/pullrequests/:id",isLogged,function(req,res){
      
     PullRequest.findById(req.params.id , function(err , found_product){
         if(err){
@@ -105,7 +177,7 @@ router.get("/pullrequests/:id",function(req,res){
  });
 
 
- router.put("/pullrequests/:id",function(req,res){
+ router.put("/pullrequests/:id",isLogged,function(req,res){
     PullRequest.findByIdAndUpdate(req.params.id , function(err,updatedProduct){
         if(err){
             res.redirect("/products/addrequests");
@@ -117,7 +189,7 @@ router.get("/pullrequests/:id",function(req,res){
 
 
 
-router.put("/accept/:id",function(req,res){
+router.put("/accept/:id",isLogged,function(req,res){
     
     Product.findByIdAndUpdate(req.params.id, {accepted:true} ,function(err,products){
         if(err){
@@ -130,7 +202,7 @@ router.put("/accept/:id",function(req,res){
 
 });
 
-router.put("/decline/:id",function(req,res){
+router.put("/decline/:id",isLogged,function(req,res){
     Product.findByIdAndUpdate(req.params.id, {declined:true} ,function(err,products){
         if(err){
             console.log(err)
@@ -143,7 +215,7 @@ router.put("/decline/:id",function(req,res){
 });
 
 
-router.put("/declinePull/:id",function(req,res){
+router.put("/declinePull/:id",isLogged,function(req,res){
     PullRequest.findByIdAndUpdate(req.params.id, {declined:true} ,function(err,products){
         if(err){
             console.log(err)
@@ -158,7 +230,7 @@ router.put("/declinePull/:id",function(req,res){
 
 
 
-router.put('/acceptpull/:id',async function (req, res) {
+router.put('/acceptpull/:id',isLogged,async function (req, res) {
 
     try{
     let foundedPull = await PullRequest.findByIdAndUpdate( req.params.id, {accepted: true})

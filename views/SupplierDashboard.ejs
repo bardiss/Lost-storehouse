@@ -49,60 +49,26 @@
   
   </div>
 </div>
-<!-- accepted request-->
-<div class ="accepted hidden" id="accept" style="margin: 15% 35%;" >  
-    <div class="massive ui buttons">  
-        <a href= "/suppliers/storing/confirmations"><button class='massive   ui button'>Accepted Adding   </button></a>
-        <div class="or"></div>
-        <a href="/suppliers/pulling/confirmations"><button class='massive ui blue button'>Accepted pulling  </button></a>        
-    </div>
-</div>    
-<!-- decline-->
-<div class ="accepted hidden" id="decline" style="margin: 15% 35%;" >  
-    <div class="massive ui buttons">  
-        <a href= "/suppliers/storing/declined"><button class='massive   ui button'>Declined Adding   </button></a>
-        <div class="or"></div>
-        <a href="/suppliers/pulling/declined"><button class='massive ui blue button'>Declined pulling  </button></a>        
-    </div>
-</div>      
-  
 
-<div id="buttons" >
+      <div id="buttons" >
         <div class="dashcontainer">
 
-            <a class="cont"> <button class="fluid ui  blue button  " id="btn1" >Add New Product </button> </a>
+            <a class="cont"> <button class="fluid ui  blue button  " id="btn" >Add New Product </button> </a>
           
-            <a class="cont" href="/suppliers/products/pull"><button  class=" fluid ui  blue button ">Pull Product</button></a>
-            <a class="cont" href="/suppliers/products/show"><button  class=" fluid ui  blue button">Show Product</button></a>
-            <a class="cont" ><button id="btn2" class=" fluid ui  blue button ">accepted requests</button></a>
-            <a class="cont" ><button id="btn3" class=" fluid ui  blue button ">decline requests</button></a>
+            <a class="cont" href="/suppliers/products/pull"><button class=" fluid ui  blue button ">Pull Product</button></a>
+            <a class="cont" href="/suppliers/products/show"><button class=" fluid ui  blue button">Show Product</button></a>
+            <a class="cont" href="/suppliers/storing/confirmations"><button class=" fluid ui  blue button ">accepted requests</button></a>
+            <a class="cont" href="/suppliers/suppdeclined"><button class=" fluid ui  blue button ">decline requests</button></a>
         </div>
       </div>
 
         <script> 
         // add new product
-          $('#btn1').click(function(){
+          $('#btn').click(function(){
           $('#buttons').addClass('hidden');
-          $('#accept').addClass('hidden');
-          $('#decline').addClass('hidden');
           $('#newprod').removeClass('hidden');
 
           });
-          // accepted request
-          $('#btn2').click (function(){
-            $('#buttons').addClass('hidden');
-            $('#newprod').addClass('hidden');
-            $('#decline').addClass('hidden');
-            $('#accept').removeClass('hidden');
-          })
-         // decline request
-            $('#btn3').click (function(){
-            $('#buttons').addClass('hidden');
-            $('#newprod').addClass('hidden');
-            $('#accept').addClass('hidden');
-            $('#decline').removeClass('hidden');
-
-          })
 
         </script>
  

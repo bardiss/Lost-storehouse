@@ -23,6 +23,10 @@ const mongoose=require('mongoose'),
     Archive       : {
         type:Number,
         default:0
+    },
+    role    :{
+        type:String,
+        default:"Employee"
     }
 
  });

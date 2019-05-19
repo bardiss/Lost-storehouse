@@ -20,6 +20,10 @@ var SupplierSchema = new mongoose.Schema({
     Archive    : {
         type:Number,
         default:0
+    },
+    role    : {
+        type:String,
+        default:"Supplier"
     }
     
 

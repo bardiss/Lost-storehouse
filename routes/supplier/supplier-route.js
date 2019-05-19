@@ -181,12 +181,7 @@ router.get("/products/show", isLogged, async (req, res) => {
     }
     
 });
-//****************** DahsBoard declined requestes************************************************* */
 
-router.get ("/suppdeclined", isLogged, (req ,res) =>{
-    res.status(200).render("supp_declinedrequest")
-
-} )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
@@ -209,6 +204,7 @@ router.get("/storing/confirmations", isLogged, async (req, res) => {
         console.log(err.message)
     }
 });
+
 // confirming or deciclining accepted adding orders
 router.get("/storing/confirmations/:productId", isLogged, async (req, res) => {
     try

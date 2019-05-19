@@ -62,10 +62,7 @@ function SupplierFunc(req,res,next){
     done(null,user);
     });
     
-    /*
-    passport.serializeUser(Supplier.serializeUser());
-    passport.deserializeUser(Supplier.deserializeUser());
-    */
+
     return next();
     
 }
@@ -120,9 +117,10 @@ app.get("/*", function(req, res){
 })
 
 
-
-app.listen(process.env.PORT,process.env.IP,function(){
-    console.log("server started");
+const ip = config.get('ipName')
+const port = config.get('portName')
+app.listen(port,ip,function(){
+    console.log(`server started on ${ip}:${port}`);
 });
 
 

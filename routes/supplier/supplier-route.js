@@ -94,7 +94,7 @@ router.get("/",isLogged, function(req,res){
 
 router.post("/product/add", isLogged,async (req,res) =>{
    const newProduct = req.body.product;
-   newProduct.supplier = String(createId())    // supplier_id
+   newProduct.supplier = req.user._id
    const validationResult = validateProduct(newProduct);
    if(!validationResult.error){
         try
@@ -126,7 +126,7 @@ router.get("/products/pull", isLogged, async function (req ,res){
         const result = await Product
             .find(
                 {
-                        // supplier_id
+                    _id: req.user._id,
                     accepted: true,
                     declined: false,
                     confirmed: true
@@ -146,7 +146,7 @@ router.get("/products/pull", isLogged, async function (req ,res){
 
 router.post("/products/pull", isLogged,async function (req, res){
     const newPull = req.body.product;
-    newPull.supplier = '5cd2ff1974edd329fcab2d69';        // supplier_id
+    newPull.supplier = req.user._id
 
     const validationResult = validatePull(newPull);
     if(!validationResult.error)
@@ -179,7 +179,7 @@ router.get("/products/show", isLogged, async (req, res) => {
     {
         const storedProducts = await Product
             .find({
-                    // supplier_id
+                _id: req.user._id,
                 accepted: true,
                 declined: false,
                 confirmed: true})
@@ -205,7 +205,7 @@ router.get("/storing/confirmations", isLogged, async (req, res) => {
     {
         const acceptedProducts = await Product
             .find({
-                    // supplier_id
+                _id: req.user._id,
                 accepted: true,
                 declined: false, 
                 confirmed: false})
@@ -280,7 +280,7 @@ router.get("/storing/declined", isLogged, async (req, res) => {
     {
         const declindedProducts = await Product
             .find({
-                    // supplier_id
+                _id: req.user._id,
                 accepted: false,
                 declined: true,
                 confirmed: false
@@ -305,7 +305,7 @@ router.get("/pulling/declined", isLogged, async (req, res) => {
     {
         const declindedPullings = await PullRequest
             .find({
-                    // supplier_id 
+                _id: req.user._id, 
                 accepted: false,
                 declined: true,
                 confirmed: false})
@@ -329,12 +329,6 @@ router.get('/*', function(req, res) {
 
 
 // ******************** Data Validation Section ******************
-// crreating new object id (instead supplier id which should be come from authentication)
-// Note: this function should be deleted after commiting authentication
-function createId(){
-    return new mongoose.Types.ObjectId()
-}
-
 // Validating Product according to it's schema
 // Note: it shouldn't be here :)
 function validateProduct(product){

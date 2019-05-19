@@ -1,0 +1,21 @@
+body{
+    height: 70%;
+   
+    
+}
+
+#btn{
+    margin-top: 50px;
+    font-size: large;
+    font-family: 'Philosopher', sans-serif; 
+    
+}
+#AdminContainer{
+    margin-top:200px;
+    width: 50%;
+    
+}
+.ui.fixed.inverted.menu{
+    font-size: large;
+    font-family: 'Philosopher', sans-serif; 
+}

@@ -1,4 +1,5 @@
-const mongoose=require('mongoose');
+const mongoose=require('mongoose'),
+      passportLocalMongoose = require("passport-local-mongoose");    
 
 //******* EMPLOYEE ******* */
 
@@ -7,7 +8,7 @@ const mongoose=require('mongoose');
 
     FirstName    : String,
     LastName      : String,
-    UserName      : String,
+    username      : String,
     password      : String,
     Age           : Number,
     CardNumber    : Number,
@@ -25,5 +26,7 @@ const mongoose=require('mongoose');
     }
 
  });
+ 
+EmployeeSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("Employee", EmployeeSchema);

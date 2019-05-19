@@ -4,6 +4,11 @@ Supplier        =require('../../models/supplier-model'),
 Employee        =require('../../models/employee-model'),
 Product         =require('../../models/product-model'),
 PullRequest     = require('../../models/pullRequest');
+//<<<<<<< HEAD
+//=======
+const mongoose = require('mongoose')
+
+//>>>>>>> 848967478836f852dba3cd28d7e021a87e051927
 
 router.get("/",function(req,res){
     Product.find({},function(err,products){
@@ -30,19 +35,10 @@ router.get("/addrequests", function(req,res){
         }
     });
 
-   // res.render("addrequests") 5cd2ff1974edd329fcab2d69
+  
  });
 
-    /*
-   // const result = await Product.find({})
-   try{const result = await Product.find({supplier: "5cd2ff1974edd329fcab2d69"}).populate('supplier', 'UserName -_id').select('-_id supplier')
-    console.log(result)
-    res.render('addrequests', {products: result})
-}
-    catch(err){
-        console.log(err.message)
-    }*/
-   
+  
 
 
  router.get("/pullrequests",function(req,res){
@@ -123,7 +119,9 @@ router.get("/pullrequests/:id",function(req,res){
 });
 
 
+
 router.put("/accept/:id",function(req,res){
+    
     Product.findByIdAndUpdate(req.params.id, {accepted:true} ,function(err,products){
         if(err){
             console.log(err)
@@ -162,6 +160,7 @@ router.put("/declinePull/:id",function(req,res){
 
 
 
+<<<<<<< HEAD
 router.put('/acceptpull/:id', function(req, res) {
     founded = PullRequest.findByIdAndUpdate(req.params.id, {accepted:false} ,function(err,products){
     Product.create(founded)
@@ -171,9 +170,28 @@ router.put('/acceptpull/:id', function(req, res) {
       }else{
           res.redirect("/products/pullrequests");
         // res.render("addrequests",{products :products});
+=======
+
+router.put('/acceptpull/:id',async function (req, res) {
+
+    try{
+    let foundedPull = await PullRequest.findByIdAndUpdate( req.params.id, {accepted: true})
+    
+    await Product.updateOne({name: foundedPull.name, supplier: foundedPull.supplier}
+        , {$inc: {quantity: - parseInt(foundedPull.quantity)}})
+
+    res.redirect("/products/pullrequests");
+>>>>>>> 848967478836f852dba3cd28d7e021a87e051927
     }
-    })
+    catch(err)
+    {
+        console.log(err)
+    }
+
+    
+
 });
+
 
 
 module.exports = router

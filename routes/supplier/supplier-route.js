@@ -1,27 +1,85 @@
 const express   =require("express"),
 router          =express.Router()
 const Product  =require('../../models/product-model'),
-PullRequest = require('../../models/pullRequest')
+PullRequest = require('../../models/pullRequest'),
+passport              = require("passport"),
+LocalStrategy         = require("passport-local"),
+passportLocalMongoose = require("passport-local-mongoose"),
+Supplier = require('../../models/supplier-model'),
+bodyParser            = require('body-parser');
+router.use(bodyParser.urlencoded({extended: true}));
 const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 const mongoose = require('mongoose')
+//jquery setup
+var jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM();
+const { document } = (new JSDOM('')).window;
+global.document = document;
+var $ = require("jquery")(window);
 // **************************************** Main Dashboard ****************************************
-router.get("/",function(req,res){
+
+
+router.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+ });
+ 
+ router.use(require("express-session")({
+     secret: "our team is great",  
+     resave: false,
+     saveUninitialized: false
+ }));
+ router.use(passport.initialize());
+ router.use(passport.session());
+ 
+ passport.use(new LocalStrategy(Supplier.authenticate()));
+ passport.serializeUser(Supplier.serializeUser());
+ passport.deserializeUser(Supplier.deserializeUser());
+
+ 
+router.get("/login", function(req, res){
+    
+    res.render("supplogin"); 
+ });    
+     
+ router.post("/login", passport.authenticate("local", {
+     successRedirect: "/suppliers",
+     failureRedirect: "/suppliers/login"
+ }) ,function(req, res){
+ });
+ 
+ router.get("/logout", function(req, res){
+     req.logout();
+     res.redirect("/suppliers");  
+ }); 
+ 
+ 
+ 
+ function isLogged(req, res, next){
+    /* 
+    if(req.isAuthenticated()){
+         return next();
+     }
+     res.redirect("/suppliers/login");
+     */
+
+     
+    return next();
+    }
+ 
+ 
+router.get("/",isLogged, function(req,res){
     res.status(200)
         .render("SupplierDashboard");
 });
 
 //****************************************** Storing Products **************************************
 
-// Adding new product
-router.get("/product/add",function(req ,res){
-    res.status(200)
-        .render("NewProduct");
-});
-
-router.post("/product/add",async (req,res) =>{
+router.post("/product/add", isLogged,async (req,res) =>{
    const newProduct = req.body.product;
-   newProduct.supplier = `${createId()}`
+   newProduct.supplier = String(createId())    // supplier_id
    const validationResult = validateProduct(newProduct);
    if(!validationResult.error){
         try
@@ -47,26 +105,33 @@ router.post("/product/add",async (req,res) =>{
 // ************************************* Pulling Orders *************************************************
 // Adding a new Pull order
 
-router.get("/products/pull", async function (req ,res){
+router.get("/products/pull", isLogged, async function (req ,res){
     try
     {
         const result = await Product
-            .find()     
-            .select('name category -_id');
+            .find(
+                {
+                        // supplier_id
+                    accepted: true,
+                    declined: false,
+                    confirmed: true
+                }
+            )     
+            .select('name category quantity -_id');
 
         res.status(200)
             .render("PullProduct",{names: result});
     }
-    catch(err){
+    catch(err)
+    {
         // Printing the error
         console.log(err.message);
     }
 });
 
-router.post("/products/pull",async function (req, res){
+router.post("/products/pull", isLogged,async function (req, res){
     const newPull = req.body.product;
-    //newPull.supplier = `${createId()}  // Must be removed after authentication`
-    newPull.supplier = '5cd2ff1974edd329fcab2d69';
+    newPull.supplier = '5cd2ff1974edd329fcab2d69';        // supplier_id
 
     const validationResult = validatePull(newPull);
     if(!validationResult.error)
@@ -94,12 +159,12 @@ router.post("/products/pull",async function (req, res){
 
 //***************************************** Showing Products already stored ****************************************
 
-router.get("/products/show", async (req, res) => {
+router.get("/products/show", isLogged, async (req, res) => {
     try 
     {
         const storedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957" ,
+                    // supplier_id
                 accepted: true,
                 declined: false,
                 confirmed: true})
@@ -116,27 +181,21 @@ router.get("/products/show", async (req, res) => {
     }
     
 });
-//****************** DahsBoard accepted requestes************************************************* */
-
-router.get ("/suppaccepted", (req ,res) =>{
-    res.status(200).render("supp_acceptedrequest")
-
-} )
 //****************** DahsBoard declined requestes************************************************* */
 
-router.get ("/suppdeclined", (req ,res) =>{
+router.get ("/suppdeclined", isLogged, (req ,res) =>{
     res.status(200).render("supp_declinedrequest")
 
 } )
 
 // ********************************* showing accepted storing orders waiting to be confirmed ***********************
 
-router.get("/storing/confirmations", async (req, res) => {
+router.get("/storing/confirmations", isLogged, async (req, res) => {
     try
     {
         const acceptedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
+                    // supplier_id
                 accepted: true,
                 declined: false, 
                 confirmed: false})
@@ -151,16 +210,50 @@ router.get("/storing/confirmations", async (req, res) => {
     }
 });
 // confirming or deciclining accepted adding orders
-router.get("/storing/confirmations/:productId", async (req, res) => {
+router.get("/storing/confirmations/:productId", isLogged, async (req, res) => {
     try
     {
-        const productUpdate = req.query
-        const productID = req.params.productId
+        // First, check if the product is confirmed
+        const confirmed = req.query.confirmed
+        if(confirmed)
+        {
+            // Yes?, so search for a such product in the database
+            const productID = req.params.productId
+            const addingRequest = await Product.findOne({_id: productID})
+            
+            let founded = await Product.find({
+                name: addingRequest.name,
+                supplier: addingRequest.supplier,
+            category: addingRequest.category,
+                accepted: true,
+                declined: false,
+                confirmed: true
+            })
+            founded = founded[0]
+            
+            // Have you find such product in the databas?
+            if(founded )
+            {
+                // if yes, so update it and remove the new request
+                await Product.findByIdAndUpdate(founded._id, {$inc: {quantity:  parseInt(addingRequest.quantity)},
+                                                                    price: addingRequest.price,
+                                                                    description: addingRequest.description})
+                await Product.deleteOne({_id: addingRequest._id })
+            }
+                // if not dound , so accept the new product by changing the confirmed to true
+            else
+            {
+                await Product.findByIdAndUpdate(productID, {confirmed:true})
+            }
+        }
 
-        await Product
-            .updateOne({_id: productID}, productUpdate);
-        
-            res.status(201)
+
+        // if the product is declined, so simply refuse it
+        else{
+            await Product.updateOne({_id: productID}, {confirmed: false, declined: true, accepted: false})
+        }
+
+        res.status(201)
                 .redirect('/suppliers/storing/confirmations')
     }
     catch(err){
@@ -171,12 +264,12 @@ router.get("/storing/confirmations/:productId", async (req, res) => {
 
 //*********************************  showing declined storing orders *************************************************
 
-router.get("/storing/declined", async (req, res) => {
+router.get("/storing/declined", isLogged, async (req, res) => {
     try
     {
         const declindedProducts = await Product
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
+                    // supplier_id
                 accepted: false,
                 declined: true,
                 confirmed: false
@@ -193,57 +286,15 @@ router.get("/storing/declined", async (req, res) => {
     }
 });
 
-//******************************  showing accepted Pullings orders waiting to be confirmed ****************************
-
-router.get("/pulling/confirmations", async (req, res) => {
-    try
-    {
-        const acceptedPullings = await PullRequest
-            .find({
-                //supplier: "5cd03fd3e23a9038e0157957",
-                accepted: true,
-                declined: false, 
-                confirmed: false})
-            .select('_id name category quantity') ;
-
-        res.status(200)
-            .render('acceptedPulling', {products: acceptedPullings})
-    }
-    catch(err)
-    {
-        // Printing the error
-        console.log(err.message)
-    }
-
-});
-
-// confirming or deciclining accepted pulling orders
-router.get("/pulling/confirmations/:pullingId", async (req, res) => {
-    try
-    {
-        const pullingUpdate = req.query
-        const pullingID = req.params.pullingId
-        await PullRequest
-            .updateOne({_id: pullingID}, pullingUpdate);
-        
-            res.status(201)
-                .redirect('/suppliers/pulling/confirmations');
-    }
-    catch(err){
-        // Printing the error
-        console.log(err.message)
-    }
-});
-
 
 //************************************* showing declined Pullings orders *********************************************
 
-router.get("/pulling/declined", async (req, res) => {
+router.get("/pulling/declined", isLogged, async (req, res) => {
     try
     {
         const declindedPullings = await PullRequest
             .find({
-                //supplier: "5cd03fd3e23a9038e0157957", 
+                    // supplier_id 
                 accepted: false,
                 declined: true,
                 confirmed: false})
@@ -258,6 +309,13 @@ router.get("/pulling/declined", async (req, res) => {
         console.log(err.message)
     }
 });
+
+router.get('/*', function(req, res) {
+    res.send("404 page not found don't come here again!!!! seriosuly i'm not joking don't hack us pleaseee");
+    
+});
+
+
 
 // ******************** Data Validation Section ******************
 // crreating new object id (instead supplier id which should be come from authentication)
@@ -290,6 +348,5 @@ function validatePull(pull){
     };
     return Joi.validate(pull, schema) ;
 }
-
 
 module.exports = router ;

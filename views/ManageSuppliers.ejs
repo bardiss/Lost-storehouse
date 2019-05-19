@@ -1,6 +1,6 @@
-<% include ./partials/header %>
+<% include ./partials/newadminheader %>
 <div class="ui container Table">
-<table class="ui  inverted table">
+<table class="ui  inverted table" id="archived">
     <thead>
       <tr>
         <th>Name</th>
@@ -18,7 +18,7 @@
       
       <tr>
         <td> <%= supplier.FirstName +" "+supplier.LastName %> </td>
-        <td> <%= supplier.UserName %> </td>
+        <td> <%= supplier.username %> </td>
         <th class="right aligned"><a href="/admin/admin_suppliers/<%= supplier._id%>/edit"><button class="ui green basic button"> Edit </button></a></th>
         <th class="right aligned">
           
@@ -31,12 +31,50 @@
     
     </tbody>
       
-      <% } %>
+    <% } }); %>
+  </table>
+  
    
-    <% }) %>
+  <table class="ui  inverted table handleArchiving" id="unarchived">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th></th>
+        <th></th>
 
+      </tr>
+    </thead>
+   
+    <% suppliers.forEach(function(supplier){ %>
+  <%  if(supplier.Archive===1) {  %>
+
+        <tbody>
+        
+        <tr>
+          <td> <%= supplier.FirstName +" "+supplier.LastName %> </td>
+          <td> <%= supplier.username %> </td>
+        
+        </tr>
+      </tbody>
+               <% } }); %>
 
   </table>
+  
+        <button id="switch"  class="ui green button large">archived/unarchived</button>       
   </div>
+          
+
+<script>
+ 
+  $('#switch').click(function(){
+    //alert("clicked!");
+    $('#archived').toggleClass('handleArchiving');
+    $('#unarchived').toggleClass('handleArchiving');
+  })
+</script>
+
+
+</div>
 
 <% include ./partials/footer %>

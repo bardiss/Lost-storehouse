@@ -126,7 +126,7 @@ router.get("/products/pull", isLogged, async function (req ,res){
         const result = await Product
             .find(
                 {
-                    _id: req.user._id,
+                    supplier: req.user._id,
                     accepted: true,
                     declined: false,
                     confirmed: true
@@ -179,7 +179,7 @@ router.get("/products/show", isLogged, async (req, res) => {
     {
         const storedProducts = await Product
             .find({
-                _id: req.user._id,
+                supplier: req.user._id,
                 accepted: true,
                 declined: false,
                 confirmed: true})
@@ -205,7 +205,7 @@ router.get("/storing/confirmations", isLogged, async (req, res) => {
     {
         const acceptedProducts = await Product
             .find({
-                _id: req.user._id,
+                supplier: req.user._id,
                 accepted: true,
                 declined: false, 
                 confirmed: false})
@@ -280,7 +280,7 @@ router.get("/storing/declined", isLogged, async (req, res) => {
     {
         const declindedProducts = await Product
             .find({
-                _id: req.user._id,
+                supplier: req.user._id,
                 accepted: false,
                 declined: true,
                 confirmed: false
@@ -305,7 +305,7 @@ router.get("/pulling/declined", isLogged, async (req, res) => {
     {
         const declindedPullings = await PullRequest
             .find({
-                _id: req.user._id, 
+                supplier: req.user._id, 
                 accepted: false,
                 declined: true,
                 confirmed: false})
